@@ -1,0 +1,15 @@
+{
+  "originHash" : "2ad9a5a63326a4debf8d31b9de92bdf8e0e1b6cb23bdaaf2f75c080e597234f3",
+  "pins" : [
+    {
+      "identity" : "deckkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/danielsaidi/DeckKit",
+      "state" : {
+        "revision" : "c4ccd3ccc78b119a8976e603806e008260148c8b",
+        "version" : "1.4.0"
+      }
+    }
+  ],
+  "version" : 3
+}
