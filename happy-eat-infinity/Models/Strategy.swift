@@ -7,10 +7,12 @@
 
 import Foundation
 import DeckKit
+import SwiftData
 
-struct Strategy: DeckItem, Hashable {
+@Model
+class Strategy: DeckItem, Hashable {
     var name: String
-    var description: String
+    var details: String
     
     var duration: Duration
     var instructions: String
@@ -19,14 +21,23 @@ struct Strategy: DeckItem, Hashable {
     var contentType: ContentType
     
     var id: String { name } // MARK: this might be a smart way of doing id's
+    
+    init(name: String, description: String, duration: Duration, instructions: String, content: String? = nil, contentType: ContentType) {
+        self.name = name
+        self.details = description
+        self.duration = duration
+        self.instructions = instructions
+        self.content = content
+        self.contentType = contentType
+    }
 }
 
-enum Duration {
+enum Duration: Codable {
     case short
     case long
 }
 
-enum ContentType {
+enum ContentType: Codable {
     case textField
     case article
     case none

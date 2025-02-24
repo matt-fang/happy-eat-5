@@ -19,7 +19,7 @@ struct happyeat5App: App {
     
     var body: some Scene {
         WindowGroup {
-            DiscoverView(strategies: [])
+            MainTabView()
         }
         .modelContainer(container)
         

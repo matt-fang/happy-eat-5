@@ -71,7 +71,7 @@ struct ReflectView: View {
         guard let rating = selectedRating else { return }
         
         let reflection = Reflection(
-//            strategyID: strategy.id,
+            strategyID: strategy.name,
             date: Date(),
             successRating: rating,
             userNotes: notes.isEmpty ? nil : notes
