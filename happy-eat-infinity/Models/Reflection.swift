@@ -11,7 +11,7 @@ import SwiftData
 @Model
 class Reflection {
     var id: UUID = UUID()
-    var strategyID: UUID
+//    var strategyID: UUID?
     var date: Date
     
     var successRating: Int
@@ -19,11 +19,11 @@ class Reflection {
 
     var imageURL: URL?
     
-    init(strategyID: UUID, date: Date, successRating: Int, userNotes: String? = nil, imageURL: URL? = nil) {
-        self.strategyID = strategyID
+    init(/*strategyID: UUID,*/ date: Date, successRating: Int, userNotes: String? = nil, imageURL: URL? = nil) {
+//        self.strategyID = strategyID
         self.date = date
         self.successRating = successRating
         self.userNotes = userNotes
-        self.imageURL = imageURL
+//        self.imageURL = imageURL
     }
 }
