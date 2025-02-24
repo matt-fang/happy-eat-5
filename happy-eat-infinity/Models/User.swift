@@ -6,3 +6,14 @@
 //
 
 import Foundation
+import SwiftData
+
+@Model
+class User {
+    var id = UUID()
+    var eatingStyle: EatingStyle
+    
+    init(eatingStyle: EatingStyle) {
+        self.eatingStyle = eatingStyle
+    }
+}
