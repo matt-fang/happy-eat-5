@@ -8,9 +8,26 @@
 import Foundation
 import DeckKit
 
-struct Strategy: DeckItem {
+struct Strategy: DeckItem, Hashable {
     var name: String
-    var text: String
+    var description: String
+    
+    var duration: Duration
+    var instructions: String
+    
+    var content: String?
+    var contentType: ContentType
     
     var id: String { name } // MARK: this might be a smart way of doing id's
+}
+
+enum Duration {
+    case short
+    case long
+}
+
+enum ContentType {
+    case textField
+    case article
+    case none
 }
