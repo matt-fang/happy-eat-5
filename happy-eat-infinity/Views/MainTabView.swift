@@ -22,6 +22,17 @@ struct MainTabView: View {
     }
 }
 
+// Update Screen enum to include associated value for strategy
+enum Screen: Hashable {
+    case discover
+    case doIt(Strategy)
+    case reflect(Strategy)
+    case strategy(Strategy)
+//    case reflect(Strategy)
+    case reflectionDetail(Reflection)
+}
+
+
 #Preview {
     MainTabView()
 }
