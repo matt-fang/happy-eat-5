@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct EatingStyle: Identifiable, Codable {
+struct EatingStyle: Identifiable, Codable, Equatable {
     let id = UUID()
     let title: String
     let description: String
