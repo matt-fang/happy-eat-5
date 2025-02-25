@@ -9,7 +9,7 @@ struct GalleryView: View {
     let ratingColors: [Int: Color] = [
         3: Color(red: 0.3, green: 0.7, blue: 0.9), // Light blue
         2: Color(red: 0.2, green: 0.5, blue: 0.8), // Medium blue
-        1: Color(red: 0.1, green: 0.3, blue: 0.7) // Deep blue
+        1: Color(red: 0.1, green: 0.3, blue: 0.7)  // Deep blue
     ]
     
     let ratingEmojis: [Int: String] = [
@@ -26,23 +26,31 @@ struct GalleryView: View {
                 LazyVGrid(columns: columns, spacing: 2) {
                     ForEach(reflections) { reflection in
                         Button {
-                            path.append(.reflectionDetail(reflection))
+                            path.append(.reflectionDetail(reflection))  // Push the detail view
                         } label: {
-                            VStack {
-                                ZStack {
-                                    Rectangle()
-                                        .fill(ratingColors[reflection.successRating] ?? .blue)
-                                        .aspectRatio(1, contentMode: .fit)
-                                    
-                                    Text(ratingEmojis[reflection.successRating] ?? "")
-                                        .font(.system(size: 32))
-                                }
+                            ZStack {
+                                Rectangle()
+                                    .fill(ratingColors[reflection.successRating] ?? .blue)
+                                    .aspectRatio(1, contentMode: .fit)
+                                
+                                Text(ratingEmojis[reflection.successRating] ?? "")
+                                    .font(.system(size: 32))
                             }
                         }
                     }
                 }
             }
             .navigationTitle("Reflection Gallery")
+            .navigationDestination(for: Screen.self) { screen in
+                switch screen {
+                case .reflectionDetail(let reflection):
+                    ReflectionDetailView(reflection: reflection).onAppear { print ("strategy is \(reflection.strategyID)")}
+                case _:
+                    // MARK: l
+                    Text("WHOOPS BUG FIX THIS LATER")
+                }
+                
+            }
         }
     }
 }
@@ -69,10 +77,13 @@ struct ReflectionDetailView: View {
                 }
                 .padding(.bottom)
                 
-                if let strategy = strategy {
-                    Text("Strategy: \(strategy.name)")
-                        .font(.title2)
-                }
+//                if let strategy = strategy {
+//                    Text("Strategy: \(strategy.name)")
+//                        .font(.title2)
+//                }
+                
+                Text("Strategy: \(reflection.strategyID)")
+                    .font(.title2)
                 
                 Text("Rating: \(getRatingText(reflection.successRating))")
                     .foregroundColor(ratingColors[reflection.successRating])
@@ -115,7 +126,3 @@ struct ReflectionDetailView: View {
         }
     }
 }
-
-//#Preview {
-//    GalleryView()
-//}
