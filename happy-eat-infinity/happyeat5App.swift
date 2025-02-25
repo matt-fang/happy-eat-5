@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct happyeat5App: App {
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     
     let container: ModelContainer = {
         let schema = Schema([Reflection.self]) // add more as you need
@@ -19,7 +20,12 @@ struct happyeat5App: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            if hasCompletedOnboarding {
+                MainTabView()
+            } else {
+                OnboardingView()
+            }
+            
         }
         .modelContainer(container)
         
