@@ -12,7 +12,7 @@ struct OnboardingView: View {
         OnboardingEatingStyle(title: "Careful Clean Eater", description: "Health-focused but may stress over food choices", eatingStyle: .careful),
         OnboardingEatingStyle(title: "Unconscious Eater", description: "Often unaware of eating habits, multitasks while eating", eatingStyle: .unconscious),
         OnboardingEatingStyle(title: "Anxious Eater", description: "Feels stressed about eating, especially in social situations", eatingStyle: .anxious),
-        OnboardingEatingStyle(title: "Emotional Eater", description: "Eating triggered by stress or emotions", eatingStyle: .anxious),
+        OnboardingEatingStyle(title: "Emotional Eater", description: "Eating triggered by stress or emotions", eatingStyle: .emotional),
         OnboardingEatingStyle(title: "Professional Dieter", description: "Frequently tries new diets and restrictions", eatingStyle: .professional)
     ]
     
