@@ -31,8 +31,8 @@ enum Screen: Hashable {
 //    case reflect(Strategy)
     case reflectionDetail(Reflection)
 }
-
-
-#Preview {
-    MainTabView()
-}
+//
+//
+//#Preview {
+//    MainTabView()
+//}

@@ -10,10 +10,17 @@ import SwiftData
 
 @Model
 class User {
-    var id = UUID()
+    @Attribute(.unique) var id = UUID()
     var eatingStyle: EatingStyle
+    
+    @Relationship var strategies: [Strategy] = []
     
     init(eatingStyle: EatingStyle) {
         self.eatingStyle = eatingStyle
+    }
+    
+    // Make this a method rather than a computed property for Swift Data compatibility
+    func getFilteredStrategies() -> [Strategy] {
+        return strategies.filter { $0.eatingStyle == eatingStyle }
     }
 }

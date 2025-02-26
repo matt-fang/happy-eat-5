@@ -11,7 +11,7 @@ struct ReflectView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            Text("How did it go with \(strategy.name)?")
+            Text("Was this strategy helpful?")
                 .font(.title2)
                 .multilineTextAlignment(.center)
             

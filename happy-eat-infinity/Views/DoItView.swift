@@ -9,7 +9,7 @@ struct DoItView: View {
         VStack(alignment: .leading, spacing: 20) {
             // Header section
             VStack(alignment: .leading, spacing: 8) {
-                Text(strategy.name)
+                Text(strategy.name.sentenceCased())
                     .font(.title)
                     .fontWeight(.bold)
                 
@@ -80,13 +80,13 @@ struct DoItView: View {
                     .font(.headline)
                 
                 TextEditor(text: $journalEntry)
-                    .frame(minHeight: 150)
+                    .frame(minHeight: 100)
                     .padding(8)
                     .background(Color(.systemGray6))
                     .cornerRadius(8)
             }
             
-        case .none:
+        case .action:
             VStack(spacing: 16) {
                 Image(systemName: "checkmark.circle")
                     .font(.system(size: 50))

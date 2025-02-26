@@ -1,17 +1,19 @@
 import SwiftUI
 
 struct OnboardingView: View {
+    @Environment(\.modelContext) var context
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var currentPage = 0
-    @State private var selectedStyle: EatingStyle?
+    @State private var selectedStyle: OnboardingEatingStyle?
+    var userModel = User(eatingStyle: .intuitive)
     
     let styles = [
-        EatingStyle(title: "Intuitive Eater", description: "Makes food choices without guilt, honors hunger, enjoys eating"),
-        EatingStyle(title: "Careful Clean Eater", description: "Health-focused but may stress over food choices"),
-        EatingStyle(title: "Unconscious Eater", description: "Often unaware of eating habits, multitasks while eating"),
-        EatingStyle(title: "Anxious Eater", description: "Feels stressed about eating, especially in social situations"),
-        EatingStyle(title: "Emotional Eater", description: "Eating triggered by stress or emotions"),
-        EatingStyle(title: "Professional Dieter", description: "Frequently tries new diets and restrictions")
+        OnboardingEatingStyle(title: "Intuitive Eater", description: "Makes food choices without guilt, honors hunger, enjoys eating", eatingStyle: .intuitive),
+        OnboardingEatingStyle(title: "Careful Clean Eater", description: "Health-focused but may stress over food choices", eatingStyle: .careful),
+        OnboardingEatingStyle(title: "Unconscious Eater", description: "Often unaware of eating habits, multitasks while eating", eatingStyle: .unconscious),
+        OnboardingEatingStyle(title: "Anxious Eater", description: "Feels stressed about eating, especially in social situations", eatingStyle: .anxious),
+        OnboardingEatingStyle(title: "Emotional Eater", description: "Eating triggered by stress or emotions", eatingStyle: .anxious),
+        OnboardingEatingStyle(title: "Professional Dieter", description: "Frequently tries new diets and restrictions", eatingStyle: .professional)
     ]
     
     var body: some View {
@@ -54,6 +56,7 @@ struct OnboardingView: View {
                 
                 Button(action: {
                     hasCompletedOnboarding = true
+                    context.insert(userModel)
                 }) {
                     Text("Let's Get Started!")
                         .font(.headline)
@@ -77,6 +80,7 @@ struct OnboardingView: View {
             ForEach(styles) { style in
                 Button(action: {
                     selectedStyle = style
+                    userModel.eatingStyle = selectedStyle!.eatingStyle
                 }) {
                     VStack(alignment: .leading) {
                         Text(style.title)
@@ -97,6 +101,6 @@ struct OnboardingView: View {
     }
 }
 
-#Preview {
-    OnboardingView()
-}
+//#Preview {
+//    OnboardingView()
+//}

@@ -13,7 +13,7 @@ struct happyeat5App: App {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     
     let container: ModelContainer = {
-        let schema = Schema([Reflection.self]) // add more as you need
+        let schema = Schema([Reflection.self, User.self]) // add more as you need
         let container = try! ModelContainer(for: schema, configurations: []) // MARK: add do-try-catch
         return container
     }()
