@@ -4,57 +4,57 @@ struct DoItView: View {
     @Binding var path: [Screen]
     let strategy: Strategy
     @State private var journalEntry: String = ""
+    var strategyEntry = ""
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            // Header section
-            VStack(alignment: .leading, spacing: 8) {
-                Text(strategy.name.sentenceCased())
-                    .font(.title)
-                    .fontWeight(.bold)
-                
-                Text(strategy.instructions)
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .padding(.bottom, 8)
-            }
-            .padding(.horizontal)
-            
-            // Content section based on type
-            contentSection
-                .padding(.horizontal)
-            
-            Spacer()
-            
-            // Done button
-            Button {
-                if strategy.contentType == .textField {
-                    // Save journal entry to strategy content
-                    // You would need to make strategy.content mutable or use a different approach
-                    // This is just a placeholder
+        ZStack {
+            Color.cream.ignoresSafeArea()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    // Header section
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(strategy.name.lowercased())
+                            .font(.title)
+                            .fontWeight(.bold)
+                        
+                        Text(strategy.instructions)
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                            .padding(.bottom, 8)
+                    }
+                    .padding(.horizontal)
+                    
+                    // Content section based on type
+                    contentSection
+                        .padding(.horizontal)
+                    
+                    Spacer()
                 }
-                
-                // Navigate to reflection view
-                path.append(.reflect(strategy))
-            } label: {
-                Text("Done")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.accentColor)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                .navigationDestination(for: Screen.self) { screen in
+                    switch screen {
+                    case .reflect(let strategy, let journalEntry):
+                        ReflectView(path: $path, strategyEntry: journalEntry, strategy: strategy)
+                    case _:
+                        Text("uhoh, this looks like a navigation bug!")
+                    }
+                }
+                .navigationBarTitleDisplayMode(.inline)
             }
-            .padding()
-        }
-        .navigationDestination(for: Screen.self) { screen in
-            switch screen {
-            case .reflect(let strategy):
-                ReflectView(path: $path, strategy: strategy)
-            case _:
-                Text("ADD MORE CASES FIX THIS!")
+            .safeAreaInset(edge: .bottom) {
+                Button {
+                    // Navigate to reflection view
+                    path.append(.reflect(strategy, journalEntry))
+                } label: {
+                    Text("Done")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.accentColor)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .padding()
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
     }
     
     @ViewBuilder
@@ -75,15 +75,10 @@ struct DoItView: View {
             }
             
         case .textField:
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading) {
                 Text("Journal Entry")
                     .font(.headline)
-                
-                TextEditor(text: $journalEntry)
-                    .frame(minHeight: 100)
-                    .padding(8)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
+                TransparentTextEntry(text: $journalEntry, placeholder: "Write your thoughts here")
             }
             
         case .action:

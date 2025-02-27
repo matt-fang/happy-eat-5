@@ -16,16 +16,16 @@ class Strategy: DeckItem, Hashable {
     
     var content: String?
     var contentType: ContentType
-    var eatingStyle: EatingStyle
+    var eatingStyles: [EatingStyle]
     
     var id: String { name } // MARK: this might be a smart way of doing id's
     
-    init(name: String, instructions: String, content: String? = nil, contentType: ContentType, eatingStyle: EatingStyle) {
+    init(name: String, instructions: String, content: String? = nil, contentType: ContentType, eatingStyles: [EatingStyle]) {
         self.name = name
         self.instructions = instructions
         self.content = content
         self.contentType = contentType
-        self.eatingStyle = eatingStyle
+        self.eatingStyles = eatingStyles
     }
 }
 
@@ -36,10 +36,14 @@ enum ContentType: Codable {
 }
 
 enum EatingStyle: String, Codable {
-    case intuitive
+//    case intuitive
+//    case emotional
+//    case unconscious
+//    case anxious
+//    case careful
+//    case professional
     case emotional
-    case unconscious
-    case anxious
-    case careful
-    case professional
+    case diethistory
+    case bodyimage
+    case gentle
 }

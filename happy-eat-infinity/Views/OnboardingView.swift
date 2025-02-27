@@ -5,74 +5,92 @@ struct OnboardingView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var currentPage = 0
     @State private var selectedStyle: OnboardingEatingStyle?
-    var userModel = User(eatingStyle: .intuitive)
+    var userModel = User(eatingStyle: .gentle)
     
     let styles = [
-        OnboardingEatingStyle(title: "Intuitive Eater", description: "Makes food choices without guilt, honors hunger, enjoys eating", eatingStyle: .intuitive),
-        OnboardingEatingStyle(title: "Careful Clean Eater", description: "Health-focused but may stress over food choices", eatingStyle: .careful),
-        OnboardingEatingStyle(title: "Unconscious Eater", description: "Often unaware of eating habits, multitasks while eating", eatingStyle: .unconscious),
-        OnboardingEatingStyle(title: "Anxious Eater", description: "Feels stressed about eating, especially in social situations", eatingStyle: .anxious),
+        OnboardingEatingStyle(title: "Intuitive Eater", description: "Makes food choices without guilt, honors hunger, enjoys eating", eatingStyle: .gentle),
+        OnboardingEatingStyle(title: "Body Image Conscious", description: "Struggles with confidence and may make food choices based on appearance concerns", eatingStyle: .bodyimage),
+        OnboardingEatingStyle(title: "Careful Clean Eater", description: "Health-focused but may stress over food choices", eatingStyle: .diethistory),
+        
+        OnboardingEatingStyle(title: "Unconscious Eater", description: "Often unaware of eating habits, multitasks while eating", eatingStyle: .emotional),
+        OnboardingEatingStyle(title: "Anxious Eater", description: "Feels stressed about eating, especially in social situations", eatingStyle: .emotional),
         OnboardingEatingStyle(title: "Emotional Eater", description: "Eating triggered by stress or emotions", eatingStyle: .emotional),
-        OnboardingEatingStyle(title: "Professional Dieter", description: "Frequently tries new diets and restrictions", eatingStyle: .professional)
+        OnboardingEatingStyle(title: "Professional Dieter", description: "Frequently tries new diets and restrictions", eatingStyle: .diethistory)
     ]
     
     var body: some View {
-        TabView(selection: $currentPage) {
-            // Welcome Page
-            VStack(spacing: 24) {
-                Text("Welcome to Happy Eat!")
-                    .font(.title)
-                    .fontWeight(.bold)
-                Text("Tell us about your eating habits so we can tailor advice just for you.")
-                    .font(.title3)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-            }
-            .tag(0)
-            
-            // Style Selection
-            ScrollView {
-                strategies
-            }
-            .tag(1)
-            
-            // Strategy Info
-            VStack(spacing: 32) {
-                VStack(spacing: 16) {
-                    Text("Perfect! We've got some strategies ready for you.")
-                        .font(.title2)
+        ZStack {
+            Color.cream.ignoresSafeArea()
+            TabView(selection: $currentPage) {
+                // Welcome Page
+                VStack(spacing: 24) {
+                    Text("Welcome to Happy Eat!")
+                        .font(.title)
                         .fontWeight(.bold)
+                    Text("Tell us about your eating habits so we can tailor advice just for you.")
+                        .font(.title3)
                         .multilineTextAlignment(.center)
-                    
-                    Text("Browse through personalized tips and tap the ones you want to try.")
-                        .font(.body)
-                        .multilineTextAlignment(.center)
-                    
-                    Text("After each try, you'll get to reflect on what worked best for you. It's all about finding your perfect fit!")
-                        .font(.body)
-                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
                 }
-                .padding(.horizontal)
+                .tag(0)
                 
-                Button(action: {
-                    hasCompletedOnboarding = true
-                    context.insert(userModel)
-                }) {
-                    Text("Let's Get Started!")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(10)
+                // Style Selection
+                ScrollView {
+                    strategies
                 }
-                .padding(.horizontal)
+                .tag(1)
+                
+                // Strategy Info
+                VStack(spacing: 32) {
+                    VStack(spacing: 16) {
+                        Text("Perfect! We’ve got some strategies ready for you.")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .multilineTextAlignment(.center)
+                        
+                        Text("Swipe through the cards on the next screen and select the ones that feel most helpful!")
+                            .font(.body)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(.horizontal)
+                    
+                    Button(action: {
+                        hasCompletedOnboarding = true
+                        context.insert(userModel)
+                    }) {
+                        Text("Get Started")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.newRed)
+                            .cornerRadius(10)
+                            
+                    }
+                    .padding(.horizontal)
+                }
+                .padding()
+                .tag(2)
             }
-            .padding()
-            .tag(2)
+            .tabViewStyle(PageTabViewStyle())
+            .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
         }
-        .tabViewStyle(PageTabViewStyle())
-        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+        .overlay(alignment: .bottom) {
+            HStack {
+                Spacer()
+                Image(systemName: "chevron.left")
+                    .padding()
+                    .bold()
+                    .foregroundStyle(.gray)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .padding()
+                    .bold()
+                    .foregroundStyle(.gray)
+                Spacer()
+            }
+            .padding(.horizontal, 40)
+        }
     }
     
     var strategies: some View {
@@ -91,7 +109,7 @@ struct OnboardingView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                    .background(selectedStyle == style ? Color.blue : Color.gray.opacity(0.1))
+                    .background(selectedStyle == style ? Color.newRed : Color.gray.opacity(0.1))
                     .foregroundColor(selectedStyle == style ? .white : .primary)
                     .cornerRadius(8)
                 }

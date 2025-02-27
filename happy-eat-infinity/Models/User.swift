@@ -12,595 +12,769 @@ import SwiftData
 class User {
     @Attribute(.unique) var id = UUID()
     var eatingStyle: EatingStyle
+    var streak: Int = 0
+    var lastCompletedDate: Date?
+    
+    var playStreakAnimation: Bool = false
     
     @Relationship var strategies = [
         Strategy(
-            name: "Reflect on How Diets Impact You",
-            instructions: "Reflect on your past experiences with dieting and identify how restrictive rules made you feel deprived, out of control, or frustrated. Write about specific moments when you felt restricted by diet rules and list the negative effects you noticed, such as increased cravings or low self-esteem. Use your journal to detail these experiences so you can better trust your body’s natural signals.",
-            content: "Enter your detailed reflections here...",
+            name: "reflect on how diets have affected me",
+            instructions: """
+              Think back on my past experiences with dieting. Write about moments when diet rules made me feel restricted or frustrated, and note any negative effects like extra cravings or lower self-esteem.
+              """,
+            content: "Enter your reflections here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.diethistory, .emotional]
         ),
         Strategy(
-            name: "List and Compare the Pros and Cons of Dieting",
-            instructions: "Create two lists in your journal: one for the benefits you experienced from dieting and one for the drawbacks. Explain how each pro or con affected your mood and behavior with specific examples (for instance, note if the stress and anxiety from dieting outweighed any positive outcomes). Reflect on which list weighed more and what that reveals about your relationship with food.",
+            name: "list what worked and what didn't with dieting",
+            instructions: """
+              Make two simple lists: one for things that felt helpful when I dieted, and another for the drawbacks. Write a few notes on how each made me feel.
+              """,
             content: "List your pros and cons here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.diethistory]
         ),
         Strategy(
-            name: "Explore the Effects of Deprivation on Your Cravings",
-            instructions: "Think about a time when you were denied something you really wanted, and describe how that deprivation intensified your cravings and emotions. Write in detail about the feelings you experienced—such as anger, sadness, or frustration—and use bullet points if needed to list these emotions. Reflect on how these intense feelings might be influencing your current eating habits.",
+            name: "notice how being deprived makes me crave things",
+            instructions: """
+              Think about a time when not getting what I wanted made my cravings stronger. Write down a few thoughts on the feelings that came up and how they might affect my eating now.
+              """,
             content: "Describe your experience of deprivation here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.emotional, .gentle]
         ),
         Strategy(
-            name: "Record Your Acts of Rebellion Against Diet Rules",
-            instructions: "Recall a specific time when you broke a dieting rule and write about what led you to rebel. Describe what you did, what prompted your rebellion, and the consequences of your actions. List examples (such as ignoring a food portion limit) and reflect on how this act helped you reclaim your autonomy in making food choices.",
+            name: "write about times I pushed back against diet rules",
+            instructions: """
+              Recall a moment when I broke a diet rule. Write down what happened, why I chose to rebel, and what it felt like to reclaim my choices.
+              """,
             content: "Document your rebellious experience here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.diethistory, .emotional]
         ),
         Strategy(
-            name: "Claim Your Autonomy in Food Choices",
-            instructions: "Imagine making all your food choices based solely on your body’s signals and personal taste. Write a detailed reflection on how being autonomous can increase your satisfaction and self-trust, and include examples of decisions you want to make without external pressure. List specific ways to start trusting your inner wisdom about food.",
+            name: "reclaim my food choices on my own terms",
+            instructions: """
+              Imagine making all my food decisions based on what feels right for me. Write down a few ideas about how being true to myself can boost my satisfaction.
+              """,
             content: "Enter your reflection on autonomy here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .emotional]
         ),
         Strategy(
-            name: "Adopt a Non-Diet Mentality",
-            instructions: "List the specific actions you can take to let go of the dieting mindset. For example, consider removing your scale, deleting diet apps, or stopping the habit of measuring portions. Write about why these changes will help you trust your body’s natural hunger and fullness signals and provide detailed examples of how to implement these changes in your daily life.",
+            name: "let go of the dieting mindset",
+            instructions: """
+              Write about simple steps I can take to move away from diet culture—like putting away the scale or skipping diet apps—and note why these changes might help me trust my body.
+              """,
             content: "Write your plan for a non-diet mentality here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.diethistory, .gentle]
         ),
         Strategy(
-            name: "Identify What Must Change in Your Eating Habits",
-            instructions: "Reflect on your current eating behaviors and identify specific aspects that need improvement for a healthier relationship with food. Write in detail about what you wish to change—such as seeking more meal satisfaction or reducing stress while eating—and use bullet points to list your observations. Explain why these changes are important for your well-being.",
+            name: "note what I'd like to change about my eating habits",
+            instructions: """
+              Look at my current eating routines and jot down any parts I'd like to improve—whether it's getting more satisfaction from meals or reducing stress when I eat.
+              """,
             content: "Detail the changes you want to make here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "Honor Your Cravings by Choosing Desired Foods",
-            instructions: "Identify a food that you truly crave and describe in detail the satisfaction it brings you when you eat it. Write about a time when you substituted one food for another and compare the resulting satisfaction levels. Use bullet points to list your observations and explain how allowing yourself to enjoy what you crave can lead to a more balanced and fulfilling eating experience.",
+            name: "honor my cravings by eating what I really want",
+            instructions: """
+              Think of a food I truly crave and write about the satisfaction it brings. Note a time when choosing what I wanted made me feel more balanced.
+              """,
             content: "Describe your craving experiences here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.emotional, .gentle]
         ),
         Strategy(
-            name: "Recognize How Dieting Steals Enjoyment from Eating",
-            instructions: "Reflect on a period when dieting made your meals feel joyless and unfulfilling. Write in detail about what was missing from your eating experience—perhaps the freedom to choose or the pleasure of savoring your food without guilt—and provide specific examples from your life.",
-            content: "Share your thoughts on dieting’s impact here...",
+            name: "notice how dieting has taken the joy out of my meals",
+            instructions: """
+              Reflect on a time when following strict diet rules left my meals feeling joyless. Write down a few thoughts on what was missing and how it affected me.
+              """,
+            content: "Share your thoughts on dieting's impact here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.diethistory, .emotional]
         ),
         Strategy(
-            name: "Discover What Makes Your Meals Satisfying",
-            instructions: "Examine the sensory aspects of your meals by writing about the tastes, textures, and aromas that bring you satisfaction. Describe in detail how a well-balanced meal makes you feel, and use bullet points to list key elements that contribute to your meal satisfaction.",
+            name: "find out what really makes my meals satisfying",
+            instructions: """
+              Think about the tastes, textures, and aromas that make a meal enjoyable for me. Write down a few notes on what elements add up to a satisfying experience.
+              """,
             content: "Enter your observations on meal satisfaction here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "Appreciate the Visual Appeal of Food",
-            instructions: "Recall meals or food images that caught your eye because of their visual appeal. Write in detail about visual elements, such as vibrant colors or artful presentation, that made you eager to eat. Use bullet points to list these appealing features and explain how they enhance your overall dining experience.",
+            name: "notice what makes food look appealing to me",
+            instructions: """
+              Reflect on meals or food images that caught my eye. Write a few thoughts about the colors, presentation, or style that makes food inviting.
+              """,
             content: "Describe what makes food look appealing to you here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "Reflect on How Your Body Feels After Eating",
-            instructions: "Write a detailed account of how different meals leave you feeling physically satisfied or comfortable. Describe specific sensations, such as energy levels or fullness, and note any differences between meals. Use bullet points to highlight which foods or eating styles help you feel your best.",
-            content: "Share your body’s post-meal sensations here...",
+            name: "pay attention to how my body feels after eating",
+            instructions: """
+              After a meal, notice how my body reacts—whether I feel energized, relaxed, or overly full. Jot down a few notes on these sensations.
+              """,
+            content: "Share your body's post-meal sensations here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .bodyimage]
         ),
         Strategy(
-            name: "Design a Meal That Pleases All Your Senses",
-            instructions: "Plan a meal by answering questions about the taste, texture, temperature, aroma, and appearance you desire. Write a detailed plan that includes bullet points for the foods you want, the sensations you hope to experience, and the mood you wish to evoke. Explain how designing your meal this way will help you enjoy a balanced and deeply satisfying experience.",
+            name: "plan a meal that delights all my senses",
+            instructions: """
+              Imagine a meal that excites my taste, touch, smell, and sight. Write a simple plan that outlines what I'd eat and how I want to feel.
+              """,
             content: "Plan your ideal meal here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "Examine Your Meal Environment and Eating Pace",
-            instructions: "Reflect on your typical eating environment and identify any distractions—like phones, TV, or social media—that might detract from your meal enjoyment. Write in detail about how a rushed pace affects your ability to savor your food, and list specific changes you can make (such as putting your phone away or setting a slower pace).",
+            name: "look at my eating setting and pace",
+            instructions: """
+              Think about where and how quickly I eat. Write down a few observations about any distractions or rushed moments, and note simple changes I could make.
+              """,
             content: "Describe your eating environment and pace here...",
             contentType: .textField,
-            eatingStyle: .unconscious
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "Evaluate How Hunger Levels and Emotions Affect Your Eating",
-            instructions: "Before a meal, check in with yourself about your hunger level and emotional state, then write a detailed account of how these factors influence your meal satisfaction. Describe times when being too hungry or experiencing strong emotions altered your eating experience and list your observations using bullet points.",
+            name: "see how my hunger and feelings affect my meals",
+            instructions: """
+              Before and after a meal, check in with how hungry I feel and what emotions I notice. Write a few notes on any patterns that emerge.
+              """,
             content: "Record your hunger and emotional states here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.gentle, .emotional]
         ),
         Strategy(
-            name: "Assess How Conflict and Chaos Impact Your Meal Satisfaction",
-            instructions: "Write about an instance when you ate in a stressful or chaotic environment, such as during an argument or in a noisy setting. Describe in detail how these conditions affected your ability to enjoy your meal, and list strategies you might use to create a more peaceful setting in the future using bullet points.",
+            name: "see how stress or chaos affect my meal enjoyment",
+            instructions: """
+              Think about a meal eaten in a busy or stressful setting. Write down a few thoughts on how that environment changed my experience and what I might do differently.
+              """,
             content: "Detail how conflict or chaos has impacted your meals here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Summarize the Key Factors That Make Your Meals Satisfying",
-            instructions: "Review the various elements that contribute to a satisfying meal—taste, texture, environment, and more—and write a comprehensive summary that integrates your personal experiences and observations. Use bullet points to highlight the most important factors and reflect on how understanding these elements can help you plan better meals in the future.",
+            name: "sum up what really makes my meals satisfying",
+            instructions: """
+              Review the different factors—like taste, texture, and setting—that make a meal enjoyable. Write down a few key points that stand out to me.
+              """,
             content: "Summarize your key satisfaction factors here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "List and Reflect on Your Personal Food Rules",
-            instructions: "Identify any rules you have established about what or how much to eat, and write a detailed reflection on why you created these rules. List each rule with bullet points, discuss their origins (e.g., family, media, cultural influences), and reflect on whether you want to keep or change them.",
+            name: "write down my personal food rules",
+            instructions: """
+              List the rules I've set for myself about what or how much to eat. Write a few notes on why I created these rules and whether I'd like to change them.
+              """,
             content: "Document your food rules here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.diethistory]
         ),
         Strategy(
-            name: "Trace the Origins of Your Food Rules",
-            instructions: "Think about where your food rules come from—whether family traditions, cultural messages, or media influence—and write a detailed account of these origins. List specific examples using bullet points and explain how understanding the source of these rules can empower you to modify them for a healthier relationship with food.",
+            name: "trace where my food rules come from",
+            instructions: """
+              Think about the origins of my food rules—whether from family, culture, or media. Write down a few examples and what I've learned from them.
+              """,
             content: "Describe the origins of your food rules here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.diethistory]
         ),
         Strategy(
-            name: "Let Go of Restrictive Food Rules",
-            instructions: "Reflect on which food rules you feel are holding you back and write about the benefits of releasing them. Provide detailed examples of how letting go of these restrictions can lead to a more enjoyable, guilt-free eating experience. Use bullet points to list reasons for change and potential positive outcomes.",
+            name: "let go of food rules that hold me back",
+            instructions: """
+              Reflect on the rules that make me feel restricted. Write a few notes on the benefits of releasing these restrictions and how it might free me to enjoy food more.
+              """,
             content: "Write about the rules you want to let go of here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.diethistory, .gentle]
         ),
         Strategy(
-            name: "Recognize Your Habitual Eating Patterns",
-            instructions: "Observe your daily eating habits and write in detail about any automatic or routine behaviors you notice. Describe specific instances when you ate out of habit rather than true hunger and list these patterns using bullet points. Reflect on how these habits impact your overall satisfaction and consider strategies to become more mindful.",
+            name: "notice my automatic eating habits",
+            instructions: """
+              Observe my daily routines and write down moments when I eat out of habit rather than hunger. Note a few examples and how these patterns affect my satisfaction.
+              """,
             content: "Detail your habitual eating patterns here...",
             contentType: .textField,
-            eatingStyle: .unconscious
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "Record Your Eating Habits for One Week",
-            instructions: "Keep a detailed log of everything you eat over the next week, noting the time, portion sizes, and your feelings before and after each meal. Write about any patterns or insights that emerge, using bullet points to highlight key observations. Reflect on how this record can help you understand and adjust your eating behavior.",
+            name: "log everything I eat for one week",
+            instructions: """
+              Keep a simple record of my meals over the next week, noting what I ate and how I felt before and after. Write down any patterns or insights that come up.
+              """,
             content: "Enter your weekly food log here...",
             contentType: .textField,
-            eatingStyle: .unconscious
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "Reflect on How Friends Influence Your Food Rules",
-            instructions: "Write about conversations and situations with your friends that have shaped the rules you follow about food. Describe specific instances when social pressure or comparisons affected your choices and list these examples using bullet points. Reflect on how you might respond differently in the future to maintain a healthier approach.",
+            name: "think about how my friends influence my food rules",
+            instructions: """
+              Reflect on conversations and situations with friends that have shaped my ideas about food. Write a few notes on specific examples and what I might do differently.
+              """,
             content: "Share your reflections on peer influence here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.diethistory, .emotional]
         ),
         Strategy(
-            name: "Identify and Celebrate Your Favorite Foods",
-            instructions: "List your top favorite foods and write in detail about why you love them—including the flavors, textures, and positive memories they evoke. Use bullet points to highlight key aspects of each food and describe how celebrating your preferences can boost your confidence in food choices.",
+            name: "celebrate my favorite foods",
+            instructions: """
+              List a few foods I love and write about why they make me happy—whether it's their taste, texture, or the memories they bring.
+              """,
             content: "Detail your favorite foods here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .emotional]
         ),
         Strategy(
-            name: "Detect Internalized Food Judgments",
-            instructions: "Reflect on moments when you encountered negative, judgmental messages about your food choices. Write about specific examples of these 'food police' thoughts, list them using bullet points, and describe how these judgments affect your eating habits.",
+            name: "notice any negative judgments I have about food",
+            instructions: """
+              Think about moments when I felt judged for my food choices. Write down a few examples of these thoughts and how they affect my eating.
+              """,
             content: "List the negative messages you experience here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.diethistory, .emotional]
         ),
         Strategy(
-            name: "Begin Challenging Negative Food Judgments",
-            instructions: "Identify one or two common negative food judgments you’ve internalized and write in detail about how you can begin to challenge them. Provide specific examples of what you might say or do to counter these thoughts, and list potential strategies using bullet points.",
+            name: "challenge the negative thoughts I have about food",
+            instructions: """
+              Identify one or two common negative judgments I hold. Write a few notes on how I might counter these thoughts with more positive ideas.
+              """,
             content: "Detail your strategies to challenge food judgments here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Practice Flexible Thinking About Food",
-            instructions: "Reflect on times when you categorized food as either 'good' or 'bad' and write about alternative, more balanced perspectives you could adopt. Provide detailed examples and use bullet points to compare rigid versus flexible approaches. Explain how embracing flexibility can help you enjoy food without guilt.",
+            name: "find more flexible ways to think about food",
+            instructions: """
+              Reflect on times I labeled food as strictly 'good' or 'bad' and write down alternative, more balanced ideas. Jot down a few thoughts on how flexibility can help me enjoy food more.
+              """,
             content: "Write about how you can think more flexibly about food here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .emotional]
         ),
         Strategy(
-            name: "Overcome Perfectionism in Your Food Choices",
-            instructions: "Write about specific instances when striving for perfection in your food choices led to stress or disappointment. Describe in detail how letting go of perfectionism can allow you to enjoy food more freely, and list alternative approaches using bullet points.",
+            name: "let go of perfection in my food choices",
+            instructions: """
+              Think about moments when trying to be perfect with my eating led to stress. Write a few notes on how relaxing this standard might help me enjoy food more freely.
+              """,
             content: "Detail your experiences with perfectionism here...",
             contentType: .textField,
-            eatingStyle: .professional
+            eatingStyles: [.emotional, .diethistory]
         ),
         Strategy(
-            name: "Adopt a 'For the Most Part' Approach to Eating",
-            instructions: "Reflect on how adopting a 'for the most part' mindset instead of rigid rules can improve your relationship with food. Write in detail about times when a flexible attitude led to a better eating experience, and list your observations using bullet points.",
+            name: "embrace a 'for the most part' approach to eating",
+            instructions: """
+              Reflect on the benefits of not being too rigid with my food choices. Write down a few thoughts on how a flexible, 'most of the time' mindset can lead to better eating experiences.
+              """,
             content: "Describe your thoughts on a flexible approach here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "Analyze the Impact of Your Emotions on Eating",
-            instructions: "Think of a recent meal and write about how your emotions before, during, and after eating influenced your behavior. Provide detailed examples of any patterns you noticed, and list your observations using bullet points. Explain how understanding these emotional cues can help you make more mindful food choices.",
+            name: "see how my emotions affect my eating habits",
+            instructions: """
+              Think about a recent meal and write down how my feelings before, during, and after eating influenced what and how I ate. Jot down a few notes on any patterns I notice.
+              """,
             content: "Share your emotional impact analysis here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Assert Your Food Choices Confidently",
-            instructions: "Recall a time when you needed to defend your food choices and write about how you handled the situation. Describe the context, your response, and the outcome in detail, and use bullet points to list strategies for speaking up in future situations.",
+            name: "stand up for my food choices",
+            instructions: """
+              Recall a time when I needed to defend what I ate. Write a few notes on how I handled the situation and list some ideas for how I can confidently assert my choices in the future.
+              """,
             content: "Write about asserting yourself regarding food here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Recognize and Document Your Hunger Signals",
-            instructions: "Write about the physical sensations you experience when you are truly hungry. Describe in detail the signals your body sends (like a growling stomach or low energy), and list these cues using bullet points. Reflect on how noticing these signals can help you eat more mindfully.",
+            name: "notice the signals my body gives when I'm hungry",
+            instructions: """
+              Pay attention to physical cues like a growling stomach or low energy. Write down a few notes on what these signals feel like and how they guide my eating.
+              """,
             content: "Document your hunger signals here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .bodyimage]
         ),
         Strategy(
-            name: "Rate Your Hunger Intensity Before Meals",
-            instructions: "Before you begin eating, rate your hunger on a scale from 1 to 10 and record your observations. Write a detailed account of how these ratings correlate with your meal satisfaction, and use bullet points to list any patterns you notice.",
+            name: "rate how hungry I feel before a meal",
+            instructions: """
+              Before eating, give your hunger a number from 1 to 10 and write a few notes on how that level relates to how much you enjoy your meal.
+              """,
             content: "Enter your hunger ratings and observations here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .bodyimage]
         ),
         Strategy(
-            name: "Explore Eating Driven by Taste Alone",
-            instructions: "Reflect on moments when you ate mainly because a food’s taste was irresistible rather than from true hunger. Write in detail about how this type of eating felt different, and list examples of foods that triggered taste-driven hunger using bullet points.",
+            name: "reflect on times I ate just for the taste",
+            instructions: """
+              Think about meals where taste was the main attraction rather than real hunger. Write a few notes on how that felt and which foods sparked those cravings.
+              """,
             content: "Describe your taste hunger experiences here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .emotional]
         ),
         Strategy(
-            name: "Differentiate Between Emotional and Physical Hunger",
-            instructions: "Write about times when you ate due to emotions rather than actual physical hunger. Provide detailed examples of emotions like stress, sadness, or boredom that led you to eat, and list the differences you noticed using bullet points. Explain why recognizing this distinction is key to healthier eating habits.",
+            name: "tell the difference between emotional and physical hunger",
+            instructions: """
+              Reflect on moments when I ate because of my feelings versus true hunger. Write a few notes on the differences and how I can recognize each one.
+              """,
             content: "Share your experiences with emotional hunger here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.emotional, .gentle]
         ),
         Strategy(
-            name: "Share Your Unique Hunger Experiences",
-            instructions: "Reflect on various instances when you noticed different types of hunger and write about the distinct feelings associated with each. Provide detailed examples and use bullet points to highlight key observations, explaining how these insights can help you manage hunger better in the future.",
+            name: "write about my unique hunger experiences",
+            instructions: """
+              Think about different times when hunger felt distinct—whether it's a subtle signal or a strong urge. Jot down a few notes on these varied experiences.
+              """,
             content: "Document your unique hunger experiences here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .bodyimage]
         ),
         Strategy(
-            name: "Identify When You Eat for Energy",
-            instructions: "Write about instances when you ate primarily to boost your energy rather than to satisfy hunger or taste. Describe in detail the physical and emotional cues that signaled an energy-seeking need, and list specific examples using bullet points. Explain how recognizing this pattern can help you choose foods that sustain your energy throughout the day.",
+            name: "notice when I eat to boost my energy",
+            instructions: """
+              Reflect on moments when I reached for food mainly to feel more energized. Write a few notes on what cues told me I needed an energy boost.
+              """,
             content: "Record your energy-driven eating moments here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .bodyimage]
         ),
         Strategy(
-            name: "Identify Situations That Lead to Negative Eating Experiences",
-            instructions: "Reflect on specific situations where your eating environment or mindset led to unsatisfying or negative outcomes. Write in detail about factors like distractions or stress, and list strategies you can implement to avoid similar situations in the future using bullet points.",
+            name: "think about situations that lead to negative eating experiences",
+            instructions: """
+              Look at times when my eating environment or mindset made meals less enjoyable. Write a few notes on what factors contributed and how I might change them.
+              """,
             content: "Describe the negative setups you have experienced here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Describe the Sensation of Being Fully Satisfied",
-            instructions: "Write about how you feel physically when you are comfortably full after a meal. Describe specific signals such as relaxed muscles or a sense of contentment, and list any physical cues using bullet points. Explain how recognizing these signs can help prevent overeating.",
+            name: "describe how it feels to be fully satisfied after a meal",
+            instructions: """
+              After a meal, pay attention to feelings like contentment or relaxed energy. Write a few notes on the physical sensations that tell me I'm satisfied.
+              """,
             content: "Enter your observations of fullness here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .bodyimage]
         ),
         Strategy(
-            name: "Practice Mindfulness to Recognize Fullness",
-            instructions: "Reflect on a recent meal and write about how being present helped you notice when you were full. Describe the techniques you used—such as focusing on the taste or texture of each bite—and list these strategies using bullet points. Explain how practicing mindfulness can enhance your overall eating experience.",
+            name: "use mindfulness to notice when I'm full",
+            instructions: """
+              Think about a recent meal and focus on each bite to see when you start feeling full. Write a few notes on any techniques you used and what you observed.
+              """,
             content: "Detail your mindfulness practices here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .bodyimage]
         ),
+        //MARK: next copy paste
+
         Strategy(
-            name: "Slow Down Your Eating to Notice Fullness",
-            instructions: "Plan a meal where you deliberately slow down your eating pace to better notice your fullness signals. Write a detailed action plan that includes why you want to eat slowly, specific steps you will take (such as chewing more thoroughly or pausing between bites), and what you expect to observe. After the meal, record your observations and reflect on how this practice influenced your satisfaction.",
+            name: "slow down my eating so I can notice when I'm full",
+            instructions: """
+              Think about a meal when you purposely slowed your pace to feel when you were full. Write a simple plan—maybe by chewing longer or pausing between bites—and later note what you observed.
+              """,
             content: "Describe your slow-eating plan and observations here...",
             contentType: .action,
-            eatingStyle: .unconscious
+            eatingStyles: [.gentle, .emotional]
         ),
         Strategy(
-            name: "Prevent Extreme Hunger Before Meals",
-            instructions: "Reflect on times when you allowed yourself to become too hungry and write about strategies to prevent extreme hunger, such as having a small, healthy snack before meals. List these strategies using bullet points and explain how managing your hunger can lead to more balanced meals.",
-            content: "Enter your strategies to avoid extreme hunger here...",
+            name: "stop myself from getting overly hungry before meals",
+            instructions: """
+              Recall a time when you were extremely hungry before a meal. Write down a few ideas to avoid that feeling—perhaps by having a light snack beforehand—and note why this might help keep your meals balanced.
+              """,
+            content: "Enter your ideas to avoid extreme hunger here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "Start Eating When You’re Moderately Hungry",
-            instructions: "Write about how beginning a meal when you feel moderately hungry rather than starving can enhance your dining experience. Describe in detail what your ideal hunger level feels like and list the benefits—such as better portion control and increased flavor enjoyment—using bullet points. Explain how this approach helps prevent overeating.",
-            content: "Detail your ideal hunger level and benefits here...",
+            name: "start my meal when I'm just a little hungry",
+            instructions: """
+              Consider what being moderately hungry feels like for you. Write down your thoughts on how starting your meal sooner might help with portion control and enjoying flavors.
+              """,
+            content: "Detail your ideal hunger level and its benefits here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle]
         ),
         Strategy(
-            name: "Examine the Reasons Behind Starting a Meal",
-            instructions: "Reflect on what prompts you to begin eating and analyze whether these reasons are driven by true physical hunger. Write a detailed account of the signals you notice before a meal and list any patterns or triggers using bullet points. Explain how understanding your motivations can help you make healthier food choices.",
+            name: "explore why I begin eating",
+            instructions: """
+              Reflect on what usually prompts you to start eating. Write down whether it's true hunger or other cues, and note any patterns you notice.
+              """,
             content: "Describe your reasons for starting a meal here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Manage Family Influences on Your Eating",
-            instructions: "Write about any family rules or expectations that affect your eating behavior. Describe specific examples and list strategies to navigate or modify these influences so that you can better honor your own food choices.",
-            content: "Detail the family influences and your strategies here...",
+            name: "think about how my family shapes my eating habits",
+            instructions: """
+              Consider how family expectations or habits influence your food choices. Write down a couple of examples and a few ideas on how you might adjust these influences to fit your needs.
+              """,
+            content: "Detail the family influences and your ideas here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.diethistory, .emotional]
         ),
         Strategy(
-            name: "Explore the Various Reasons Behind Eating",
-            instructions: "Write a detailed reflection on the different motivations that drive you to eat, including physical hunger, emotions, and social influences. Describe how each factor affects your choices and list examples from your experiences using bullet points. Explain how understanding these motivations can help you develop a more balanced approach.",
+            name: "dig into why I eat",
+            instructions: """
+              Think about all the reasons behind your eating—whether it's physical hunger, emotions, or social cues. Write down a few thoughts and examples of what drives you.
+              """,
             content: "Document your reflections on why you eat here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Practice Self-Compassion in Your Eating Journey",
-            instructions: "Reflect on what self-compassion means for you when it comes to eating and your body image. Write in detail about a time when you treated yourself kindly during a difficult eating experience, and list specific self-compassionate actions or affirmations using bullet points. Explain how practicing self-compassion can improve your relationship with food.",
-            content: "Share your self-compassion reflections here...",
+            name: "be kind to myself about my eating",
+            instructions: """
+              Recall a moment when you treated yourself kindly during a challenging eating experience. Write down what self-compassion looked like for you and a couple of affirmations or ideas.
+              """,
+            content: "Share your self-compassion thoughts here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.emotional, .bodyimage]
         ),
         Strategy(
-            name: "Express Gratitude for Your Food and Body",
-            instructions: "Write down in detail the things you are grateful for regarding your food experiences and your body. Describe how expressing gratitude can shift your mindset and enhance your meal satisfaction, and list specific examples using bullet points.",
+            name: "appreciate my food and my body",
+            instructions: """
+              List a few things you're grateful for about your food experiences and your body. Write down how taking a moment for gratitude makes you feel.
+              """,
             content: "List your gratitude reflections here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Identify and Reflect on Your Emotions Around Eating",
-            instructions: "Write about the range of emotions you experience before, during, and after meals. Describe in detail specific emotions that influence your food choices, and list examples using bullet points. Explain how recognizing these feelings can help you manage emotional eating more effectively.",
+            name: "notice my emotions around eating",
+            instructions: """
+              Think about the feelings you experience before, during, and after meals. Write down a few quick thoughts on which emotions affect your choices and share any examples.
+              """,
             content: "Detail your emotional experiences related to eating here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Implement Self-Care Strategies to Support Healthy Eating",
-            instructions: "Write a detailed plan of self-care activities that you can integrate into your routine to support your eating habits and overall well-being. Describe specific actions—such as taking a relaxing bath, going for a walk, or practicing meditation—and list them using bullet points. Explain why these self-care practices are essential for maintaining a positive relationship with food.",
+            name: "add self-care to support my eating",
+            instructions: """
+              Plan a couple of self-care activities that boost your well-being—like a short walk or a deep-breathing break. Write down your ideas and why they help you.
+              """,
             content: "Enter your self-care plan here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.emotional, .bodyimage]
         ),
         Strategy(
-            name: "Develop a Balanced Approach to Eating",
-            instructions: "Reflect on what a balanced eating routine looks like for you and write a detailed plan to achieve it. Describe specific examples of balanced meals or daily routines, and list strategies that help you maintain consistency using bullet points. Explain how adopting a balanced approach can enhance both your physical and emotional well-being.",
+            name: "create a balanced eating routine for myself",
+            instructions: """
+              Think about what a balanced meal or daily routine looks like for you. Write down some ideas and examples that might help you feel steady throughout the day.
+              """,
             content: "Describe your plan for balance here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .diethistory]
         ),
         Strategy(
-            name: "Identify Ways to Nurture Yourself Through Food",
-            instructions: "Write about how you can nurture yourself through thoughtful food choices and self-care practices. Describe specific actions, such as cooking a healthy meal or enjoying a mindful snack, and list examples using bullet points. Explain why nurturing yourself is key to developing a positive and sustainable relationship with food.",
-            content: "Share your nurturing strategies here...",
+            name: "discover how food can nurture me",
+            instructions: """
+              Write down a few ideas on how your food choices can be a form of self-care—like cooking a nourishing meal or savoring a mindful snack.
+              """,
+            content: "Share your nurturing ideas here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.gentle, .emotional]
         ),
         Strategy(
-            name: "Practice Sitting with Difficult Emotions",
-            instructions: "Write about a time when you allowed yourself to experience difficult emotions without distraction. Describe in detail what you felt, the techniques you used to sit with those feelings, and what you learned from the experience. List any strategies that helped you cope using bullet points.",
-            content: "Document your experience sitting with emotions here...",
+            name: "sit with my tough feelings",
+            instructions: """
+              Recall a time when you let yourself feel a difficult emotion without distraction. Write down your experience and a couple of techniques that helped you stay present.
+              """,
+            content: "Document your experience with tough emotions here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Acknowledge the Sadness in Setting Boundaries",
-            instructions: "Reflect on how saying 'enough' during meals sometimes brings a sense of sadness, and write about the conflicting emotions you experience when setting boundaries. Describe in detail your feelings and list potential ways to honor both your emotions and your need to stop eating using bullet points.",
-            content: "Share your reflections on boundary-setting here...",
+            name: "recognize the sadness I feel when setting limits with food",
+            instructions: """
+              Think about a moment when stopping eating brought up mixed emotions. Write down your thoughts and a few ideas on how to balance those feelings with your needs.
+              """,
+            content: "Share your reflections on setting limits here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Discover Your True Emotional Needs Related to Eating",
-            instructions: "Write a detailed reflection on the emotions you experience throughout your eating process and try to identify what you truly need. Describe specific situations where your feelings influenced your food choices, and list any insights using bullet points.",
+            name: "uncover what I really need emotionally when I eat",
+            instructions: """
+              Reflect on times when your feelings influenced your eating. Write down a few insights about what you truly need during those moments.
+              """,
             content: "Detail your emotional needs here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Identify Healthy Distractions to Manage Stress",
-            instructions: "List the activities or distractions that help you cope with stress without turning to food. Write in detail about how each distraction works for you, and include specific examples (e.g., taking a walk or calling a friend) using bullet points.",
-            content: "Write your healthy distraction strategies here...",
+            name: "find other ways to handle stress besides food",
+            instructions: """
+              Write down a few ideas for activities that help you manage stress—like taking a walk or calling a friend—and note why they work for you.
+              """,
+            content: "Write your stress-management ideas here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.emotional]
         ),
         Strategy(
-            name: "Plan and Rehearse Strategies for Challenging Eating Situations",
-            instructions: "Write a detailed action plan for handling difficult eating situations, such as feeling overwhelmed or stressed during meals. List specific strategies—like taking a break, practicing deep breathing, or stepping away from the table—using bullet points, and record your observations after implementation.",
-            content: "Describe your action plan for challenging situations here...",
+            name: "plan a strategy for tricky eating moments",
+            instructions: """
+              Think of a challenging eating situation and write down a simple plan to handle it—maybe by taking a break or practicing deep breathing. Later, note what you learned.
+              """,
+            content: "Describe your plan for challenging situations here...",
             contentType: .action,
-            eatingStyle: .anxious
+            eatingStyles: [.emotional, .gentle]
         ),
         Strategy(
-            name: "Reflect on How You Perceive Your Body",
-            instructions: "Write about your personal view of your body and whether you see it as a source of strength or criticism. Describe in detail how these perceptions influence your eating habits, and list any positive or negative beliefs using bullet points.",
+            name: "consider how I see my body",
+            instructions: """
+              Write down your thoughts on whether you view your body with strength or criticism. Note a few examples of how this perspective influences your eating.
+              """,
             content: "Share your thoughts on your body perception here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Develop Strategies to Embrace and Care for Your Body",
-            instructions: "Write about practical steps you can take to care for your body and embrace self-care practices. Describe specific actions (such as creating a self-care routine or scheduling relaxation) and list them using bullet points. Explain how these strategies can improve your well-being and lead to a more positive self-image.",
-            content: "Outline your body care strategies here...",
+            name: "come up with ways to care for my body",
+            instructions: """
+              Write down a few simple ideas for treating your body kindly—like setting up a self-care routine or taking time to relax—and explain why these ideas help you.
+              """,
+            content: "Outline your body-care ideas here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Practice Repeated Self-Compassion for Your Body",
-            instructions: "Reflect on a recent situation when you were hard on yourself about your body and write about how you could respond with kindness. Describe specific compassionate actions or affirmations, and list these strategies using bullet points. Explain why regularly practicing self-compassion is essential for a healthier body image.",
+            name: "practice being gentle with my body",
+            instructions: """
+              Recall a moment when you were hard on yourself about your body. Write down a few ideas on how you can respond with kindness, such as a positive affirmation or a caring gesture.
+              """,
             content: "Enter your self-compassion practices here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Challenge Negative Body Image Messages",
-            instructions: "Write about any negative beliefs you have about your body and describe specific instances when these messages surfaced. Detail how rejecting these thoughts can lead to a healthier self-image, and list strategies to counteract them using bullet points.",
-            content: "Document your strategies to challenge negative messages here...",
+            name: "push back against negative messages about my body",
+            instructions: """
+              Write down a few examples of negative thoughts you've had about your body and note some ideas for how to counter them with positive messages.
+              """,
+            content: "Document your ideas to challenge negative messages here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Honor and Care for Your Body as a Sacred Space",
-            instructions: "Write about how you can treat your body with the respect and care you would give to a sacred space. Describe specific actions (such as choosing nourishing foods or engaging in relaxing activities) and list them using bullet points. Explain how this approach can improve your self-image and overall well-being.",
+            name: "treat my body with the care it deserves",
+            instructions: """
+              Think about ways to respect and nurture your body—like choosing nourishing foods or taking time to relax. Write down a few ideas on how to honor your body.
+              """,
             content: "Share your ideas for honoring your body here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Embrace Your Body’s Natural Rhythms",
-            instructions: "Reflect on the natural changes and rhythms of your body and write in detail about how accepting them can reduce stress. Describe the benefits of letting go of unrealistic standards, and list specific examples of natural processes you appreciate using bullet points.",
+            name: "accept my body's natural flow",
+            instructions: """
+              Write down a few thoughts on how embracing your body's natural rhythms can ease stress. Note some examples of what you appreciate about your body's natural pace.
+              """,
             content: "Express your acceptance of your body's rhythms here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Celebrate Your Body’s Strengths and Abilities",
-            instructions: "Write about the incredible things your body is capable of doing and list specific examples of its strengths. Describe in detail how acknowledging these abilities can boost your self-esteem, and use bullet points to highlight key strengths.",
-            content: "List your body’s strengths here...",
+            name: "celebrate what my body can do",
+            instructions: """
+              Write down a few quick thoughts on your body's strengths and abilities. Note some examples of what makes you feel strong.
+              """,
+            content: "List your body's strengths here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Deepen Your Gratitude for Your Body and Its Functions",
-            instructions: "Write a detailed list of additional things you are grateful for about your body and its functions. Describe how expressing gratitude changes your mindset and improves your eating experiences, and list specific examples using bullet points.",
+            name: "add to my gratitude list for my body",
+            instructions: """
+              Write down a few more things you're thankful for about your body and its functions. Note how this gratitude lifts your mood.
+              """,
             content: "Enter your extended gratitude list here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Plan to Meet Your Body’s Daily Needs",
-            instructions: "Write about what your body requires each day—such as rest, movement, and proper nourishment—and describe your current routines. List any changes you can make to better support your body’s needs using bullet points, and explain how meeting these needs contributes to a balanced lifestyle.",
-            content: "Outline your daily body care plan here...",
+            name: "plan for my body's daily care",
+            instructions: """
+              Think about what your body needs each day—like rest, movement, or nourishing food. Write down your current habits and a few simple ideas for improvement.
+              """,
+            content: "Outline your daily body-care plan here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Practice Positive Self-Talk About Your Body",
-            instructions: "Write down several positive affirmations or compliments about your body that you can repeat daily. Describe in detail how using positive self-talk makes you feel, and list any improvements in your self-esteem using bullet points.",
-            content: "Enter your positive affirmations here...",
+            name: "speak kindly to myself about my body",
+            instructions: """
+              Write down a few positive affirmations or compliments you can say about your body, and note how these words make you feel.
+              """,
+            content: "Enter your positive self-talk here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Choose Clothing That Makes You Feel Good",
-            instructions: "List the types of clothes that make you feel comfortable and confident, and write about why these choices boost your self-image. Describe in detail how wearing your favorite outfits affects your mood, and list specific examples using bullet points.",
-            content: "Share your clothing preferences here...",
+            name: "pick out clothes that lift my spirits",
+            instructions: """
+              Write down some ideas about the types of clothes that make you feel comfortable and confident. Note a few examples of outfits that boost your mood.
+              """,
+            content: "Share your clothing ideas here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Engage in Activities That Nurture Your Body",
-            instructions: "Write about various activities that help you take care of your body, such as a warm bath, a gentle walk, or a yoga session. Describe in detail how these nurturing actions make you feel, and list specific examples using bullet points.",
+            name: "do something that nurtures my body",
+            instructions: """
+              Think about an activity that makes you feel cared for—like a gentle walk, a short yoga session, or a warm bath. Write down a few ideas on how this helps you.
+              """,
             content: "List your nurturing activities here...",
             contentType: .textField,
-            eatingStyle: .emotional
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Stop Comparing Yourself to Others",
-            instructions: "Write about specific instances when you compared your eating habits or body to others, and describe how these comparisons made you feel. List alternative strategies using bullet points that help you focus on your unique strengths and personal progress, and explain why stopping comparisons is important.",
+            name: "stop comparing myself to others",
+            instructions: """
+              Reflect on times when comparing yourself to others left you feeling low. Write down a few ideas on how to focus on your own strengths and progress.
+              """,
             content: "Reflect on your experiences with comparisons here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Modify Your Social Media Habits for a Positive Mindset",
-            instructions: "Identify the social media habits that negatively impact your body image and write a detailed plan to change them. Describe specific steps—such as unfollowing triggering accounts or limiting screen time—and list these actions using bullet points. Explain how these changes can help create a more positive self-perception.",
+            name: "adjust my social media habits for a better mindset",
+            instructions: """
+              Write down a few ideas on how you can change your social media use—like unfollowing triggering accounts or limiting screen time—and note why these changes might help.
+              """,
             content: "Outline your social media changes here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Acknowledge That Daily Movement is Essential",
-            instructions: "Reflect on the small ways you move throughout your day and write about how these movements contribute to your overall well-being. Describe the benefits of everyday activity, and list specific examples (such as walking to class, stretching, or taking stairs) using bullet points.",
+            name: "appreciate the little ways I move every day",
+            instructions: """
+              Write down some examples of small movements—like taking the stairs or a quick stretch—that boost your energy and mood.
+              """,
             content: "Detail your daily movements here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Differentiate Between Structured Exercise and Natural Movement",
-            instructions: "Write about the differences you notice between planned workouts and the natural movement you engage in during daily activities. Describe in detail how each type of activity makes you feel, and list specific examples of both structured exercise and casual movement using bullet points.",
+            name: "notice the difference between planned workouts and everyday movement",
+            instructions: """
+              Write down your thoughts on how structured exercise feels different from the natural movement in your daily life. Jot down a few examples of each.
+              """,
             content: "Share your reflections on exercise and movement here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Understand the Benefits of Non-Exercise Activity (NEAT)",
-            instructions: "Read about non-exercise activity thermogenesis (NEAT) and write a detailed reflection on how everyday activities contribute to your energy expenditure. Describe what NEAT means to you, and list examples of small movements—like fidgeting or short walks—using bullet points.",
-            content: "Express your understanding of NEAT here...",
+            name: "recognize how little movements add up",
+            instructions: """
+              Consider how everyday actions—like fidgeting or a short walk—help keep you active. Write down your thoughts on these small but meaningful movements.
+              """,
+            content: "Express your understanding of small movements here...",
             contentType: .textField,
-            eatingStyle: .unconscious
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Reflect on Your Sedentary Habits",
-            instructions: "Write about how often you find yourself being inactive and describe in detail the impact this has on your energy and mood. List specific examples of times when being sedentary affected you using bullet points, and explain why increasing your activity is important for a balanced lifestyle.",
+            name: "think about how much time I spend inactive",
+            instructions: """
+              Write down your thoughts on when you feel most sedentary and note a few examples of how inactivity affects your energy or mood.
+              """,
             content: "Document your sedentary habits here...",
             contentType: .textField,
-            eatingStyle: .unconscious
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Explore Your Resistance to Exercise",
-            instructions: "Write about any barriers or negative feelings you have toward exercising, and describe in detail how these feelings manifest in your behavior. List specific examples when you resisted exercise using bullet points, and reflect on potential solutions.",
+            name: "explore what holds me back from exercising",
+            instructions: """
+              Write down a few thoughts on any barriers or negative feelings you have toward exercise, and jot down some ideas that might help you overcome them.
+              """,
             content: "Share your thoughts on exercise resistance here...",
             contentType: .textField,
-            eatingStyle: .anxious
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Reflect on the Importance of Including Movement in Your Day",
-            instructions: "Write about how adding more movement to your daily routine can positively affect your energy and mood. Describe in detail the benefits you experience when you are active, and list specific examples of simple movements using bullet points.",
-            content: "Detail your reflections on movement here...",
+            name: "see how adding more movement could boost my day",
+            instructions: """
+              Write down some ideas about simple movements you can incorporate into your routine, and note how you think they might improve your mood or energy.
+              """,
+            content: "Detail your thoughts on adding movement here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Identify Signs of Overexercising",
-            instructions: "Write about any signs or symptoms that suggest you might be exercising excessively, and describe in detail how overexercising affects your body and mind. List specific examples of overexercising behaviors using bullet points, and reflect on the importance of balancing activity and rest.",
+            name: "check if I'm overdoing exercise",
+            instructions: """
+              Write down any signs that you might be pushing yourself too hard, and note a few thoughts on why balancing exercise with rest is important.
+              """,
             content: "Document signs of overexercising here...",
             contentType: .textField,
-            eatingStyle: .professional
+            eatingStyles: [.bodyimage]
         ),
         Strategy(
-            name: "Assess Your Readiness for Detailed Nutrition Information",
-            instructions: "Reflect on your current relationship with food information and write a detailed analysis of whether you feel prepared to engage with detailed nutrition facts. Describe how nutrition influences your eating choices, and list specific examples of aspects you're curious about using bullet points.",
-            content: "Share your readiness for nutrition details here...",
+            name: "check my comfort with nutrition info",
+            instructions: """
+              Reflect on how food information influences your choices. Write down a few examples of what you're curious about and why.
+              """,
+            content: "Share your thoughts on nutrition info here...",
             contentType: .textField,
-            eatingStyle: .careful
+            eatingStyles: [.diethistory]
         ),
         Strategy(
-            name: "Analyze How Your Meals Impact Your Mood and Energy",
-            instructions: "Write about how different meals have affected your mood and energy levels, providing detailed examples of changes you noticed after eating. Describe in detail any patterns you observed, and list your thoughts using bullet points.",
+            name: "see how my meals affect how I feel",
+            instructions: """
+              Write down your thoughts on the connection between your meals and your mood or energy. Note any patterns or examples that stand out.
+              """,
             content: "Record your reflections on meal impacts here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .emotional]
         ),
         Strategy(
-            name: "Understand the Basics of Nutrition",
-            instructions: "Read about the fundamentals of nutrition and write a detailed reflection on what nutrition means to you. Describe how a balanced mix of nutrients supports your health, and list simple nutrition principles you can apply daily using bullet points.",
+            name: "figure out what good nutrition means for me",
+            instructions: """
+              Write down some simple ideas about how a balanced mix of nutrients supports your health. Jot down a few key principles that are easy to follow.
+              """,
             content: "Detail your understanding of nutrition here...",
             contentType: .textField,
-            eatingStyle: .careful
+            eatingStyles: [.diethistory]
         ),
         Strategy(
-            name: "Incorporate Fun and Variety into Your Meals",
-            instructions: "Reflect on what 'play food' means to you and how adding variety to your meals can enhance your enjoyment. Write in detail about instances when trying a fun or unconventional food choice brought you satisfaction, and list specific examples using bullet points.",
+            name: "add some fun and variety to my meals",
+            instructions: """
+              Write down a few ideas on trying new foods or mixing up your meals. Note any examples of fun choices that made your dining experience more enjoyable.
+              """,
             content: "Share your ideas for fun food here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.gentle, .diethistory]
         ),
         Strategy(
-            name: "Apply Commonsense Principles to Nutrition",
-            instructions: "Read about commonsense nutrition and write a detailed reflection on how these principles can simplify your food choices. Describe straightforward principles that resonate with you, and list specific examples of how you can apply these ideas using bullet points.",
-            content: "Detail your commonsense nutrition ideas here...",
+            name: "come up with simple nutrition ideas that work for me",
+            instructions: """
+              Reflect on some straightforward nutrition principles. Write down a few that you think are practical and easy to follow in your daily routine.
+              """,
+            content: "Detail your simple nutrition ideas here...",
             contentType: .textField,
-            eatingStyle: .careful
+            eatingStyles: [.diethistory]
         ),
         Strategy(
-            name: "Create a Comprehensive Intuitive Eating Plan",
-            instructions: "Review all the insights and reflections from previous exercises and write a detailed summary of how you can integrate them into your daily routine. Describe your action plan for adopting intuitive eating practices, and list key strategies or steps using bullet points. Explain how this comprehensive plan will help you enjoy a healthier, more fulfilling relationship with food.",
-            content: "Summarize your intuitive eating plan here...",
+            name: "put together a simple eating plan for myself",
+            instructions: """
+              Review your thoughts on eating so far and write down a plan with a few key steps to help build a healthier relationship with food.
+              """,
+            content: "Summarize your eating plan here...",
             contentType: .textField,
-            eatingStyle: .intuitive
+            eatingStyles: [.diethistory, .gentle]
         )
     ]
     
@@ -610,6 +784,40 @@ class User {
     
     // Make this a method rather than a computed property for Swift Data compatibility
     func getFilteredStrategies() -> [Strategy] {
-        return strategies.filter { $0.eatingStyle == eatingStyle }
+        print("Filtering strategies...")
+        print("User eating style: \(eatingStyle.rawValue)")
+        print("Total strategies before filtering: \(strategies.count)")
+
+        let filtered = strategies.filter { $0.eatingStyles.contains(eatingStyle) }
+
+        print("Filtered count: \(filtered.count)")
+        for strategy in filtered {
+            print("Strategy: \(strategy.eatingStyles)")
+        }
+
+        return filtered
+    }
+    
+    func updateStreak() {
+//        let calendar = Calendar.current
+//        let today = Date()
+//
+//        if let lastDate = lastCompletedDate,
+//           let dayDifference = calendar.dateComponents([.day], from: lastDate, to: today).day {
+//            if dayDifference == 1 {
+//                // Consecutive day - increment streak
+//                streak += 1
+//            } else if dayDifference > 1 {
+//                // Streak broken - reset to 1
+//                streak = 1
+//            }
+//            // If same day, streak remains unchanged
+//        } else {
+//            // First time completing - set streak to 1
+//            streak = 1
+//        }
+//
+//        lastCompletedDate = today
+        streak += 1
     }
 }
