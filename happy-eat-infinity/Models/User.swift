@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 class User {
+    static let schemaVersion = Schema.Version(1, 0, 0)
     @Attribute(.unique) var id = UUID()
     var eatingStyle: EatingStyle
     var streak: Int = 0
@@ -17,7 +18,44 @@ class User {
     
     var playStreakAnimation: Bool = false
     
-    @Relationship var strategies = [
+    var strategies = [
+        Strategy(
+            name: "figure out what good nutrition means for me",
+            instructions: """
+              Write down some simple ideas about how a balanced mix of nutrients supports your health. Jot down a few key principles that are easy to follow.
+              """,
+            content: "Detail your understanding of nutrition here...",
+            contentType: .textField,
+            eatingStyles: [.diethistory]
+        ),
+        Strategy(
+            name: "add some fun and variety to my meals",
+            instructions: """
+              Write down a few ideas on trying new foods or mixing up your meals. Note any examples of fun choices that made your dining experience more enjoyable.
+              """,
+            content: "Share your ideas for fun food here...",
+            contentType: .textField,
+            eatingStyles: [.gentle, .diethistory]
+        ),
+        Strategy(
+            name: "come up with simple nutrition ideas that work for me",
+            instructions: """
+              Reflect on some straightforward nutrition principles. Write down a few that you think are practical and easy to follow in your daily routine.
+              """,
+            content: "Detail your simple nutrition ideas here...",
+            contentType: .textField,
+            eatingStyles: [.diethistory]
+        ),
+        Strategy(
+            name: "put together a simple eating plan for myself",
+            instructions: """
+              Review your thoughts on eating so far and write down a plan with a few key steps to help build a healthier relationship with food.
+              """,
+            content: "Summarize your eating plan here...",
+            contentType: .textField,
+            eatingStyles: [.diethistory, .gentle]
+        ),
+        
         Strategy(
             name: "reflect on how diets have affected me",
             instructions: """
@@ -740,42 +778,6 @@ class User {
             contentType: .textField,
             eatingStyles: [.gentle, .emotional]
         ),
-        Strategy(
-            name: "figure out what good nutrition means for me",
-            instructions: """
-              Write down some simple ideas about how a balanced mix of nutrients supports your health. Jot down a few key principles that are easy to follow.
-              """,
-            content: "Detail your understanding of nutrition here...",
-            contentType: .textField,
-            eatingStyles: [.diethistory]
-        ),
-        Strategy(
-            name: "add some fun and variety to my meals",
-            instructions: """
-              Write down a few ideas on trying new foods or mixing up your meals. Note any examples of fun choices that made your dining experience more enjoyable.
-              """,
-            content: "Share your ideas for fun food here...",
-            contentType: .textField,
-            eatingStyles: [.gentle, .diethistory]
-        ),
-        Strategy(
-            name: "come up with simple nutrition ideas that work for me",
-            instructions: """
-              Reflect on some straightforward nutrition principles. Write down a few that you think are practical and easy to follow in your daily routine.
-              """,
-            content: "Detail your simple nutrition ideas here...",
-            contentType: .textField,
-            eatingStyles: [.diethistory]
-        ),
-        Strategy(
-            name: "put together a simple eating plan for myself",
-            instructions: """
-              Review your thoughts on eating so far and write down a plan with a few key steps to help build a healthier relationship with food.
-              """,
-            content: "Summarize your eating plan here...",
-            contentType: .textField,
-            eatingStyles: [.diethistory, .gentle]
-        )
     ]
     
     init(eatingStyle: EatingStyle) {

@@ -42,10 +42,11 @@ extension Color {
     }
 }
 
-enum Screen: Hashable {
-    case discover
-    case doIt(Strategy)
-    case reflect(Strategy, String)
-    case strategy(Strategy)
-    case reflectionDetail(Reflection)
+extension String {
+    func sentenceCased() -> String {
+        guard let first = self.first else { return self }
+        let capitalized = first.uppercased() + self.dropFirst().lowercased()
+        return capitalized.replacingOccurrences(of: " i ", with: " I ")
+    }
 }
+

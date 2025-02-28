@@ -12,11 +12,16 @@ import SwiftData
 struct happyeat5App: App {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     
-//    let container: ModelContainer = {
-//        let schema = Schema([Reflection.self, User.self]) // add more as you need
-//        let container = try! ModelContainer(for: schema, configurations: [], inM) // MARK: add do-try-catch
-//        return container
-//    }()
+    // In happyeat5App.swift
+    let container: ModelContainer = {
+        do {
+            let schema = Schema([Reflection.self, User.self, Strategy.self])
+            let modelConfiguration = ModelConfiguration(isStoredInMemoryOnly: false)
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
     
     var body: some Scene {
         WindowGroup {
@@ -27,7 +32,7 @@ struct happyeat5App: App {
             }
             
         }
-        .modelContainer(for: [Reflection.self, User.self])
+        .modelContainer(container)
         
     }
 }

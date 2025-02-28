@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DoItView: View {
-    @Binding var path: [Screen]
+    @Binding var path: [NavScreen]
     let strategy: Strategy
     @State private var journalEntry: String = ""
     var strategyEntry = ""
@@ -13,7 +13,7 @@ struct DoItView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     // Header section
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(strategy.name.lowercased())
+                        Text(strategy.name.sentenceCased())
                             .font(.title)
                             .fontWeight(.bold)
                         
@@ -30,7 +30,7 @@ struct DoItView: View {
                     
                     Spacer()
                 }
-                .navigationDestination(for: Screen.self) { screen in
+                .navigationDestination(for: NavScreen.self) { screen in
                     switch screen {
                     case .reflect(let strategy, let journalEntry):
                         ReflectView(path: $path, strategyEntry: journalEntry, strategy: strategy)

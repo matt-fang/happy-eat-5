@@ -4,7 +4,7 @@ import SwiftUI
 struct ReflectView: View {
     @Environment(\.modelContext) private var context
     @Query var users: [User]
-    @Binding var path: [Screen]
+    @Binding var path: [NavScreen]
     
     var strategyEntry: String?
     let strategy: Strategy

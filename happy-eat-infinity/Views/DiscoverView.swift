@@ -5,7 +5,7 @@ import SwiftUI
 struct DiscoverView: View {
     @Environment(\.modelContext) private var modelContext
     @Query var users: [User]
-    @Binding var path: [Screen]
+    @Binding var path: [NavScreen]
     @State private var hasNewReflection = false
     @State private var streakIsYellow = false
     
@@ -123,7 +123,7 @@ struct DiscoverView: View {
 struct CardsView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = true
     @Query(sort: \Reflection.strategyID) var reflections: [Reflection]
-    @Binding var path: [Screen]
+    @Binding var path: [NavScreen]
     @Bindable var userModel: User
     @Binding var streakIsYellow: Bool
     
@@ -157,9 +157,14 @@ struct CardsView: View {
                 }
             } else {
                 // Your DeckView here
+                Text("Swipe through these strategies until you find one you like!")
+                    .foregroundStyle(.gray)
+                    .padding()
+                    .multilineTextAlignment(.center)
                 notEmptyDeckView
                 StreakBadgeView(streak: userModel.streak, isYellow: $streakIsYellow)
                     .padding(16)
+                
             }
         }
         .navigationTitle("Today, I want to:")
@@ -173,7 +178,6 @@ struct CardsView: View {
             ToolbarItem() {
                 Button (action: {
                     hasCompletedOnboarding = false
-                    OnboardingView()
                 }, label: {
                     Text("Reset")
                 })
@@ -181,7 +185,7 @@ struct CardsView: View {
         }
         .offset(y: -20)
         .padding()
-        .navigationDestination(for: Screen.self) { screen in
+        .navigationDestination(for: NavScreen.self) { screen in
             // Your navigation destinations
             switch screen {
             case .discover:
@@ -224,7 +228,7 @@ struct CardsView: View {
                     )// Ternary for foreground color
                 .overlay {
                     ZStack {
-                        Text(strategy.name.lowercased())// Fixed to `lowercased()`
+                        Text(strategy.name.sentenceCased())// Fixed to `lowercased()`
                             .font(.system(size: 30, weight: .medium, design: .rounded))
                             .foregroundStyle(
                                 reflections.map({ $0.strategyID }).contains(strategy.name)
@@ -253,14 +257,11 @@ struct CardsView: View {
     }
 }
 
-extension String {
-    func sentenceCased() -> String {
-        guard let first = self.first else { return self }
-        return first.uppercased() + self.dropFirst().lowercased()
-    }
+enum NavScreen: Hashable {
+    case discover
+    case doIt(Strategy)
+    case reflect(Strategy, String)
+    case strategy(Strategy)
+    case reflectionDetail(Reflection)
 }
 
-
-//#Preview {
-//    DiscoverView(path: <#[Screen]#>, strategies: [Strategy(name: "Note when you compare yourself to others", description: "[desc]", duration: .short, instructions: "instructions!", content: "CONTNET", contentType: .article)])
-//}

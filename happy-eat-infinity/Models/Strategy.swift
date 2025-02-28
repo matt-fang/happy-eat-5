@@ -11,14 +11,15 @@ import SwiftData
 
 @Model
 class Strategy: DeckItem, Hashable {
-    var name: String
+    static let schemaVersion = Schema.Version(1, 0, 0)
+    @Attribute(.unique) var name: String
     var instructions: String
     
     var content: String?
     var contentType: ContentType
     var eatingStyles: [EatingStyle]
     
-    var id: String { name } // MARK: this might be a smart way of doing id's
+    var id: String { name }
     
     init(name: String, instructions: String, content: String? = nil, contentType: ContentType, eatingStyles: [EatingStyle]) {
         self.name = name

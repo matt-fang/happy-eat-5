@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 class Reflection {
+    static let schemaVersion = Schema.Version(1, 0, 0)
     var id: UUID = UUID()
     var strategyID: String
     var date: Date

@@ -3,7 +3,7 @@ import SwiftUI
 
 struct GalleryView: View {
     @Query(sort: \Reflection.date, order: .reverse) var reflections: [Reflection]
-    @Binding var path: [Screen]
+    @Binding var path: [NavScreen]
     
     // Color palette for different ratings
     let ratingColors: [Int: Color] = [
@@ -28,7 +28,7 @@ struct GalleryView: View {
                     reflectionGrid
                 }
                 .navigationTitle("Reflection Gallery")
-                .navigationDestination(for: Screen.self) { screen in
+                .navigationDestination(for: NavScreen.self) { screen in
                     switch screen {
                     case .reflectionDetail(let reflection):
                         ReflectionDetailView(reflection: reflection).onAppear { print ("strategy is \(reflection.strategyID)")}
@@ -87,7 +87,7 @@ struct ReflectionDetailView: View {
                                 .font(.system(size: 32))
                         }
                         
-                        Text(reflection.strategyID.lowercased())
+                        Text(reflection.strategyID.sentenceCased())
                             .font(.title)
                             .fontWeight(.bold)
                     }

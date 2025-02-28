@@ -13,7 +13,6 @@ struct OnboardingView: View {
         OnboardingEatingStyle(title: "Careful Clean Eater", description: "Health-focused but may stress over food choices", eatingStyle: .diethistory),
         
         OnboardingEatingStyle(title: "Unconscious Eater", description: "Often unaware of eating habits, multitasks while eating", eatingStyle: .emotional),
-        OnboardingEatingStyle(title: "Anxious Eater", description: "Feels stressed about eating, especially in social situations", eatingStyle: .emotional),
         OnboardingEatingStyle(title: "Emotional Eater", description: "Eating triggered by stress or emotions", eatingStyle: .emotional),
         OnboardingEatingStyle(title: "Professional Dieter", description: "Frequently tries new diets and restrictions", eatingStyle: .diethistory)
     ]
@@ -56,7 +55,7 @@ struct OnboardingView: View {
                     
                     Button(action: {
                         hasCompletedOnboarding = true
-                        context.insert(userModel)
+
                     }) {
                         Text("Get Started")
                             .font(.headline)
@@ -98,7 +97,9 @@ struct OnboardingView: View {
             ForEach(styles) { style in
                 Button(action: {
                     selectedStyle = style
-                    userModel.eatingStyle = selectedStyle!.eatingStyle
+                    userModel.eatingStyle = selectedStyle?.eatingStyle ?? EatingStyle.gentle
+                    print("eating style: \(userModel.eatingStyle)")
+                    context.insert(userModel)
                 }) {
                     VStack(alignment: .leading) {
                         Text(style.title)
@@ -109,8 +110,8 @@ struct OnboardingView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                    .background(selectedStyle == style ? Color.newRed : Color.gray.opacity(0.1))
-                    .foregroundColor(selectedStyle == style ? .white : .primary)
+                    .background(selectedStyle == style ? .white : Color.gray.opacity(0.1))
+                    .foregroundColor(.black)
                     .cornerRadius(8)
                 }
             }

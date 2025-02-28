@@ -2,8 +2,8 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var selectedTab = 0
-    @State private var discoveryPath: [Screen] = []
-    @State private var galleryPath: [Screen] = []
+    @State private var discoveryPath: [NavScreen] = []
+    @State private var galleryPath: [NavScreen] = []
     
     var body: some View {
         TabView(selection: $selectedTab) {
