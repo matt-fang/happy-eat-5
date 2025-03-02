@@ -14,23 +14,23 @@ struct DiscoverView: View {
             ZStack {
                 Color.cream.ignoresSafeArea()
                 if let userModel = users.first {
-                    if userModel.strategies.isEmpty {
-                        VStack {
-                            Text("No strategies found!")
-                                .font(.headline)
-                            
-                            Text("Current eating style: \(userModel.eatingStyle.rawValue)")
-                                .font(.subheadline)
-
-//                            Button("Add test strategies") {
-//                                addTestStrategies(to: userModel)
-//                            }
-//                            .padding()
-//                            .background(Color.blue)
-//                            .foregroundColor(.white)
-//                            .cornerRadius(8)
-                        }
-                    } else {
+//                    if userModel.strategies.isEmpty {
+//                        VStack {
+//                            Text("No strategies found!")
+//                                .font(.headline)
+//                            
+//                            Text("Current eating style: \(userModel.eatingStyle.rawValue)")
+//                                .font(.subheadline)
+//
+////                            Button("Add test strategies") {
+////                                addTestStrategies(to: userModel)
+////                            }
+////                            .padding()
+////                            .background(Color.blue)
+////                            .foregroundColor(.white)
+////                            .cornerRadius(8)
+//                        }
+//                    } else {
                         CardsView(path: $path, userModel: userModel, streakIsYellow: $streakIsYellow)
                             .onAppear {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -49,7 +49,7 @@ struct DiscoverView: View {
                                 }
                                         
                             }
-                    }
+//                    }
                 } else {
                     Text("No user found in database!")
                 }
@@ -122,7 +122,7 @@ struct DiscoverView: View {
 
 struct CardsView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = true
-    @Query(sort: \Reflection.strategyID) var reflections: [Reflection]
+    @Query(sort: \Reflection.strategyName) var reflections: [Reflection]
     @Binding var path: [NavScreen]
     @Bindable var userModel: User
     @Binding var streakIsYellow: Bool
@@ -142,30 +142,30 @@ struct CardsView: View {
 //                .multilineTextAlignment(.center)
 //                .padding()
             
-            if filteredStrategies.isEmpty {
-                VStack {
-                    Text("No strategies for \(userModel.eatingStyle.rawValue) eating style")
-                        .padding()
-                    
-                    Button("Refresh strategies") {
-                        filteredStrategies = userModel.getFilteredStrategies()
-                    }
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                }
-            } else {
+//            if filteredStrategies.isEmpty {
+//                VStack {
+//                    Text("No strategies for \(userModel.eatingStyle.rawValue) eating style")
+//                        .padding()
+//                    
+//                    Button("Refresh strategies") {
+//                        filteredStrategies = userModel.getFilteredStrategies()
+//                    }
+//                    .padding()
+//                    .background(Color.blue)
+//                    .foregroundColor(.white)
+//                    .cornerRadius(8)
+//                }
+//            } else {
                 // Your DeckView here
                 Text("Swipe through these strategies until you find one you like!")
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(.black)
                     .padding()
                     .multilineTextAlignment(.center)
                 notEmptyDeckView
                 StreakBadgeView(streak: userModel.streak, isYellow: $streakIsYellow)
                     .padding(16)
                 
-            }
+//            }
         }
         .navigationTitle("Today, I want to:")
         .navigationBarTitleDisplayMode(.large)
@@ -201,13 +201,13 @@ struct CardsView: View {
         
         .onAppear {
             print("CardsView appeared")
-            print("User eating style: \(userModel.eatingStyle.rawValue)")
+            print("User eating style: \(userModel.eatingStyle?.rawValue ?? "no eating style")")
             print("Total strategies: \(userModel.strategies.count)")
             filteredStrategies = userModel.getFilteredStrategies()
             print("Filtered strategies: \(filteredStrategies.count)")
         }
         .onChange(of: userModel.eatingStyle) {
-            print("Eating style changed to: \(userModel.eatingStyle.rawValue)")
+            print("Eating style changed to: \(userModel.eatingStyle?.rawValue ?? "eating style changed to nothing")")
             filteredStrategies = userModel.getFilteredStrategies()
         }
         .onChange(of: userModel.strategies) {
@@ -222,16 +222,16 @@ struct CardsView: View {
                 RoundedRectangle(cornerRadius: 25.0)
                     .aspectRatio(1.0, contentMode: .fit)
                     .foregroundStyle(
-                        reflections.map({ $0.strategyID }).contains(strategy.name)
-                        ? Color(hex: reflections.first(where: { $0.strategyID == strategy.name })?.successColor ?? "FFFFFF") // Use the successColor if found, else default to white
+                        reflections.map({ $0.strategyName }).contains(strategy.name)
+                        ? Color(hex: reflections.first(where: { $0.strategyName == strategy.name })?.successColor ?? "FFFFFF") // Use the successColor if found, else default to white
                         : .white
                     )// Ternary for foreground color
                 .overlay {
                     ZStack {
-                        Text(strategy.name.sentenceCased())// Fixed to `lowercased()`
+                        Text(strategy.name?.sentenceCased() ?? "Strategy")// Fixed to `lowercased()`
                             .font(.system(size: 30, weight: .medium, design: .rounded))
                             .foregroundStyle(
-                                reflections.map({ $0.strategyID }).contains(strategy.name)
+                                reflections.map({ $0.strategyName }).contains(strategy.name)
                                 ? .white : .black)
                             .multilineTextAlignment(.center)
                             .padding()
@@ -246,7 +246,7 @@ struct CardsView: View {
                         Image(systemName: "play.circle.fill")
                             .font(.system(size: 30))
                             .foregroundStyle(
-                                reflections.map({ $0.strategyID }).contains(strategy.name)
+                                reflections.map({ $0.strategyName }).contains(strategy.name)
                                 ? .white : .newRed)
                             .padding()
                     }

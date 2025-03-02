@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct OnboardingView: View {
     @Environment(\.modelContext) var context
@@ -6,6 +7,7 @@ struct OnboardingView: View {
     @State private var currentPage = 0
     @State private var selectedStyle: OnboardingEatingStyle?
     var userModel = User(eatingStyle: .gentle)
+    @Query var users: [User]
     
     let styles = [
         OnboardingEatingStyle(title: "Intuitive Eater", description: "Makes food choices without guilt, honors hunger, enjoys eating", eatingStyle: .gentle),
@@ -98,8 +100,13 @@ struct OnboardingView: View {
                 Button(action: {
                     selectedStyle = style
                     userModel.eatingStyle = selectedStyle?.eatingStyle ?? EatingStyle.gentle
-                    print("eating style: \(userModel.eatingStyle)")
+//                    print("eating style: \(userModel.eatingStyle ?? "no eating style found")")
+                    
+                    if let existingUser = users.first {
+                            context.delete(existingUser)
+                        }
                     context.insert(userModel)
+                    
                 }) {
                     VStack(alignment: .leading) {
                         Text(style.title)

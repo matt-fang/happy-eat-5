@@ -12,19 +12,19 @@ import SwiftData
 class Reflection {
     static let schemaVersion = Schema.Version(1, 0, 0)
     var id: UUID = UUID()
-    var strategyID: String
-    var date: Date
+    var strategyName: String?
+    var date: Date?
     
-    var successRating: Int
+    var successRating: Int?
     var userNotes: String?
     
     var strategyEntry: String?
-    var successColor: String
+    var successColor: String?
 
     var imageURL: URL?
     
     init(strategyID: String, date: Date, successRating: Int, userNotes: String? = nil, imageURL: URL? = nil, strategyEntry: String? = nil, successColor: String) {
-        self.strategyID = strategyID
+        self.strategyName = strategyID
         self.date = date
         self.successRating = successRating
         self.userNotes = userNotes

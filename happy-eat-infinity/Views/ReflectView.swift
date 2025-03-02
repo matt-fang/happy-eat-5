@@ -93,7 +93,7 @@ struct ReflectView: View {
         }
         
         let reflection = Reflection(
-            strategyID: strategy.name,
+            strategyID: strategy.name ?? "Strategy",
             date: Date(),
             successRating: rating,
             userNotes: notes.isEmpty ? nil : notes,

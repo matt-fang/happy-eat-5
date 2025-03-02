@@ -12,13 +12,13 @@ import SwiftData
 class User {
     static let schemaVersion = Schema.Version(1, 0, 0)
     @Attribute(.unique) var id = UUID()
-    var eatingStyle: EatingStyle
+    var eatingStyle: EatingStyle?
     var streak: Int = 0
     var lastCompletedDate: Date?
     
     var playStreakAnimation: Bool = false
     
-    var strategies = [
+    @Relationship(deleteRule: .cascade) var strategies: [Strategy] = [
         Strategy(
             name: "figure out what good nutrition means for me",
             instructions: """
@@ -787,10 +787,10 @@ class User {
     // Make this a method rather than a computed property for Swift Data compatibility
     func getFilteredStrategies() -> [Strategy] {
         print("Filtering strategies...")
-        print("User eating style: \(eatingStyle.rawValue)")
+        print("User eating style: \(eatingStyle?.rawValue ?? "no eating style in getFilteredStrategies()")")
         print("Total strategies before filtering: \(strategies.count)")
 
-        let filtered = strategies.filter { $0.eatingStyles.contains(eatingStyle) }
+        let filtered = strategies.filter { $0.eatingStyles?.contains(eatingStyle ?? .gentle) ?? true }
 
         print("Filtered count: \(filtered.count)")
         for strategy in filtered {

@@ -13,11 +13,11 @@ struct DoItView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     // Header section
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(strategy.name.sentenceCased())
+                        Text(strategy.name?.sentenceCased() ?? "Strategy")
                             .font(.title)
                             .fontWeight(.bold)
                         
-                        Text(strategy.instructions)
+                        Text(strategy.instructions ?? "Write your thoughts!")
                             .font(.body)
                             .foregroundColor(.secondary)
                             .padding(.bottom, 8)
@@ -97,6 +97,8 @@ struct DoItView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 40)
+        case _:
+            Text("Unknown strategy type!")
         }
     }
 }

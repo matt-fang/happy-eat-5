@@ -31,7 +31,7 @@ struct GalleryView: View {
                 .navigationDestination(for: NavScreen.self) { screen in
                     switch screen {
                     case .reflectionDetail(let reflection):
-                        ReflectionDetailView(reflection: reflection).onAppear { print ("strategy is \(reflection.strategyID)")}
+                        ReflectionDetailView(reflection: reflection).onAppear { print ("strategy is \(reflection.strategyName ?? "couldn't find a strategyID")")}
                     case _:
                         // MARK: l
                         Text("WHOOPS BUG FIX THIS LATER")
@@ -51,10 +51,10 @@ struct GalleryView: View {
                     ZStack {
                         Rectangle()
 //                            .fill(ratingColors[reflection.successRating] ?? Color.newYellow)
-                            .fill(Color(hex: reflection.successColor))
+                            .fill(Color(hex: reflection.successColor ?? "FFE36B"))
                             .aspectRatio(1, contentMode: .fit)
                         
-                        Text(ratingEmojis[reflection.successRating] ?? "")
+                        Text(ratingEmojis[reflection.successRating ?? 2] ?? "🙉")
                             .font(.system(size: 32))
                     }
                 }
@@ -70,7 +70,7 @@ struct ReflectionDetailView: View {
     let reflection: Reflection
     
     var strategy: Strategy? {
-        strategies.first { $0.id == reflection.strategyID }
+        strategies.first { $0.name == reflection.strategyName }
     }
     
     var body: some View {
@@ -80,14 +80,14 @@ struct ReflectionDetailView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text(reflection.date, style: .date)
+                            Text(reflection.date ?? Date(), style: .date)
                                 .font(.headline)
                             Spacer()
-                            Text(ratingEmojis[reflection.successRating] ?? "")
+                            Text(ratingEmojis[reflection.successRating ?? 2] ?? "FFE36B")
                                 .font(.system(size: 32))
                         }
                         
-                        Text(reflection.strategyID.sentenceCased())
+                        Text(reflection.strategyName?.sentenceCased() ?? "Strategy")
                             .font(.title)
                             .fontWeight(.bold)
                     }
