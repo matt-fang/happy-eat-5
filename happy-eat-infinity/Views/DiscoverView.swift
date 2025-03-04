@@ -128,35 +128,59 @@ struct CardsView: View {
     @Binding var streakIsYellow: Bool
     
     @State private var filteredStrategies: [Strategy] = []
+    @State private var xpProgress: Double = 0
+    @State private var showLevelUpOverlay = false
     
     var body: some View {
-        VStack {
-//            Text("Total strategies: \(userModel.strategies.count)")
-//                .font(.caption)
-//            
-//            Text("Filtered strategies: \(filteredStrategies.count)")
-//                .font(.caption)
-            
-//            Text("Swipe:")
-//                .foregroundStyle(Color.gray)
-//                .multilineTextAlignment(.center)
-//                .padding()
-            
-//            if filteredStrategies.isEmpty {
-//                VStack {
-//                    Text("No strategies for \(userModel.eatingStyle.rawValue) eating style")
-//                        .padding()
-//                    
-//                    Button("Refresh strategies") {
-//                        filteredStrategies = userModel.getFilteredStrategies()
-//                    }
-//                    .padding()
-//                    .background(Color.blue)
-//                    .foregroundColor(.white)
-//                    .cornerRadius(8)
-//                }
-//            } else {
-                // Your DeckView here
+        ZStack {
+            VStack {
+                // Mon status
+                HStack(spacing: 12) {
+                    Image(getMonImage(for: userModel.eatingStyle))
+                        .resizable()
+                        .interpolation(.none)
+                        .scaledToFit()
+                        .frame(width: 48, height: 48)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(getMonName(for: userModel.eatingStyle))
+                            .font(.headline)
+                        
+                        HStack {
+                            Text("Level \(userModel.level)")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                            
+                            Text("•")
+                                .foregroundColor(.secondary)
+                            
+                            Text("\(userModel.xp)/\(userModel.getXPForNextLevel()) XP")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        GeometryReader { geometry in
+                            ZStack(alignment: .leading) {
+                                Rectangle()
+                                    .fill(Color.gray.opacity(0.2))
+                                    .frame(height: 8)
+                                    .cornerRadius(4)
+                                
+                                Rectangle()
+                                    .fill(Color.accentColor)
+                                    .frame(width: geometry.size.width * xpProgress, height: 8)
+                                    .cornerRadius(4)
+                            }
+                        }
+                        .frame(height: 8)
+                    }
+                }
+                .padding()
+                .background(Color.white)
+                .cornerRadius(12)
+                .shadow(radius: 2)
+                .padding(.horizontal)
+                
                 Text("Swipe through these strategies until you find one you like!")
                     .foregroundStyle(.black)
                     .padding()
@@ -164,16 +188,29 @@ struct CardsView: View {
                 notEmptyDeckView
                 StreakBadgeView(streak: userModel.streak, isYellow: $streakIsYellow)
                     .padding(16)
-                
-//            }
+            }
+            
+            // Level up overlay
+            if showLevelUpOverlay {
+                Color.black.opacity(0.7)
+                    .ignoresSafeArea()
+                    .overlay {
+                        VStack(spacing: 20) {
+                            Text("Level Up!")
+                                .font(.system(size: 40, weight: .bold, design: .rounded))
+                                .foregroundColor(.white)
+                            
+                            Text("\(getMonName(for: userModel.eatingStyle)) reached level \(userModel.level)!")
+                                .font(.title3)
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                        }
+                    }
+                    .transition(.opacity)
+            }
         }
         .navigationTitle("Today, I want to:")
         .navigationBarTitleDisplayMode(.large)
-//        .toolbar() {
-//            ToolbarItem(placement: .topBarLeading) {
-//                StreakBadgeView(streak: userModel.streak)
-//            }
-//        }
         .toolbar {
             ToolbarItem() {
                 Button (action: {
@@ -186,33 +223,83 @@ struct CardsView: View {
         .offset(y: -20)
         .padding()
         .navigationDestination(for: NavScreen.self) { screen in
-            // Your navigation destinations
             switch screen {
             case .discover:
                 DiscoverView(path: $path)
             case .doIt(let strategy):
-                DoItView(path: $path, strategy: strategy)
+                TrainView(path: $path, strategy: strategy)
             case .reflect(let strategy, let journalEntry):
                 ReflectView(path: $path, strategyEntry: journalEntry, strategy: strategy)
             case .strategy, .reflectionDetail:
                 Text("Screen not implemented yet")
             }
         }
-        
         .onAppear {
             print("CardsView appeared")
-            print("User eating style: \(userModel.eatingStyle?.rawValue ?? "no eating style")")
+            print("User eating style: \(userModel.eatingStyle.rawValue)")
             print("Total strategies: \(userModel.strategies.count)")
             filteredStrategies = userModel.getFilteredStrategies()
             print("Filtered strategies: \(filteredStrategies.count)")
+            
+            // Animate XP bar if needed
+            if userModel.showXPAnimation {
+                withAnimation(.easeInOut(duration: 1.0)) {
+                    xpProgress = userModel.getXPProgress()
+                }
+                userModel.showXPAnimation = false
+            } else {
+                xpProgress = userModel.getXPProgress()
+            }
+            
+            // Show level up animation if needed
+            if userModel.showLevelUpAnimation {
+                withAnimation(.easeIn(duration: 0.3)) {
+                    showLevelUpOverlay = true
+                }
+                
+                // Hide the overlay after 2 seconds
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        showLevelUpOverlay = false
+                    }
+                }
+                
+                userModel.showLevelUpAnimation = false
+            }
         }
         .onChange(of: userModel.eatingStyle) {
-            print("Eating style changed to: \(userModel.eatingStyle?.rawValue ?? "eating style changed to nothing")")
+            print("Eating style changed to: \(userModel.eatingStyle.rawValue)")
             filteredStrategies = userModel.getFilteredStrategies()
         }
         .onChange(of: userModel.strategies) {
             print("Strategies array changed, count: \(userModel.strategies.count)")
             filteredStrategies = userModel.getFilteredStrategies()
+        }
+    }
+    
+    private func getMonImage(for style: EatingStyle) -> String {
+        switch style {
+        case .selfCare:
+            return "yorox"
+        case .stressed:
+            return "mushlo"
+        case .anxious:
+            return "kitsu"
+        case .unconfident:
+            return "miso"
+        }
+    }
+    
+    private func getMonName(for style: EatingStyle) -> String {
+        switch style {
+        case .selfCare:
+            return "Yorox"
+        case .stressed:
+            return "Mushlo"
+        case .anxious:
+            return "Kitsu"
+        case .unconfident:
+            return "Miso"
         }
     }
     

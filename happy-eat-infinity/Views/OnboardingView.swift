@@ -5,18 +5,15 @@ struct OnboardingView: View {
     @Environment(\.modelContext) var context
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var currentPage = 0
-    @State private var selectedStyle: OnboardingEatingStyle?
-    var userModel = User(eatingStyle: .gentle)
+    @State private var selectedMon: OnboardingMon?
+    var userModel: User = User(eatingStyle: .selfCare)
     @Query var users: [User]
     
-    let styles = [
-        OnboardingEatingStyle(title: "Intuitive Eater", description: "Makes food choices without guilt, honors hunger, enjoys eating", eatingStyle: .gentle),
-        OnboardingEatingStyle(title: "Body Image Conscious", description: "Struggles with confidence and may make food choices based on appearance concerns", eatingStyle: .bodyimage),
-        OnboardingEatingStyle(title: "Careful Clean Eater", description: "Health-focused but may stress over food choices", eatingStyle: .diethistory),
-        
-        OnboardingEatingStyle(title: "Unconscious Eater", description: "Often unaware of eating habits, multitasks while eating", eatingStyle: .emotional),
-        OnboardingEatingStyle(title: "Emotional Eater", description: "Eating triggered by stress or emotions", eatingStyle: .emotional),
-        OnboardingEatingStyle(title: "Professional Dieter", description: "Frequently tries new diets and restrictions", eatingStyle: .diethistory)
+    let mons = [
+        OnboardingMon(image: "yorox", name: "Yorox", description: "wants to eat what's good for him but hasn't gotten around to it.", eatingStyle: .selfCare),
+        OnboardingMon(image: "mushlo", name: "Mushlo", description: "eats when he's stressed or feeling down.", eatingStyle: .stressed),
+        OnboardingMon(image: "kitsu", name: "Kitsu", description: "feels anxious around food, sometimes guilty.", eatingStyle: .anxious),
+        OnboardingMon(image: "miso", name: "Miso", description: "doesn't feel very confident in herself or her body.", eatingStyle: .unconfident)
     ]
     
     var body: some View {
@@ -44,7 +41,7 @@ struct OnboardingView: View {
                 // Strategy Info
                 VStack(spacing: 32) {
                     VStack(spacing: 16) {
-                        Text("Perfect! We’ve got some strategies ready for you.")
+                        Text("Perfect! We've got some strategies ready for you.")
                             .font(.title2)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
@@ -95,31 +92,40 @@ struct OnboardingView: View {
     }
     
     var strategies: some View {
-        VStack(spacing: 15) {
-            ForEach(styles) { style in
+        LazyVGrid(columns: [
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ], spacing: 16) {
+            ForEach(mons, id: \.id) { mon in
                 Button(action: {
-                    selectedStyle = style
-                    userModel.eatingStyle = selectedStyle?.eatingStyle ?? EatingStyle.gentle
-//                    print("eating style: \(userModel.eatingStyle ?? "no eating style found")")
+                    selectedMon = mon
+                    userModel.eatingStyle = selectedMon?.eatingStyle ?? EatingStyle.selfCare
+                    currentPage += 1
                     
                     if let existingUser = users.first {
-                            context.delete(existingUser)
-                        }
-                    context.insert(userModel)
-                    
-                }) {
-                    VStack(alignment: .leading) {
-                        Text(style.title)
-                            .font(.headline)
-                        Text(style.description)
-                            .font(.subheadline)
-                            .multilineTextAlignment(.leading)
+                        context.delete(existingUser)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    context.insert(userModel)
+                }) {
+                    VStack(spacing: 8) {
+                        Image(mon.image)
+                            .interpolation(.none)
+                            .resizable()
+                            .scaledToFit()
+                        
+                        Text(mon.name)
+                            .font(.headline)
+                        
+                        Text(mon.description)
+                            .font(.caption)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.gray)
+                    }
+                    .frame(maxWidth: .infinity)
                     .padding()
-                    .background(selectedStyle == style ? .white : Color.gray.opacity(0.1))
+                    .background(selectedMon?.id == mon.id ? Color.white : Color.gray.opacity(0.1))
                     .foregroundColor(.black)
-                    .cornerRadius(8)
+                    .cornerRadius(12)
                 }
             }
         }

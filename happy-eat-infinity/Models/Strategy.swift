@@ -11,22 +11,24 @@ import SwiftData
 
 @Model
 class Strategy: DeckItem, Hashable {
-    static let schemaVersion = Schema.Version(1, 0, 0)
+    static let schemaVersion = Schema.Version(1, 0, 2)
     @Attribute(.unique) var name: String?
     var instructions: String?
     
     var content: String?
     var contentType: ContentType?
-    var eatingStyles: [EatingStyle]?
+    var eatingStyles: [EatingStyle] = [EatingStyle.selfCare]
+    var xpReward: Int = 100
     
     var id: UUID = UUID()
     
-    init(name: String, instructions: String, content: String? = nil, contentType: ContentType, eatingStyles: [EatingStyle]) {
+    init(name: String, instructions: String, content: String? = nil, contentType: ContentType, eatingStyles: [EatingStyle], xpReward: Int = 100) {
         self.name = name
         self.instructions = instructions
         self.content = content
         self.contentType = contentType
         self.eatingStyles = eatingStyles
+        self.xpReward = xpReward
     }
 }
 
@@ -37,14 +39,8 @@ enum ContentType: Codable {
 }
 
 enum EatingStyle: String, Codable {
-//    case intuitive
-//    case emotional
-//    case unconscious
-//    case anxious
-//    case careful
-//    case professional
-    case emotional
-    case diethistory
-    case bodyimage
-    case gentle
+    case selfCare
+    case anxious
+    case unconfident
+    case stressed
 }

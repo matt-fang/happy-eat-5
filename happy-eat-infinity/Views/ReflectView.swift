@@ -103,9 +103,10 @@ struct ReflectView: View {
         
         context.insert(reflection)
         
-//        if let userModel = users.first {
-//            userModel.updateStreak()
-//        }
+        if let userModel = users.first {
+            userModel.showXPAnimation = true
+            userModel.addXP(strategy.xpReward)
+        }
         
         // Go back to root
         path.removeAll()
