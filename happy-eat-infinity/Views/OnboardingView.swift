@@ -6,7 +6,7 @@ struct OnboardingView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var currentPage = 0
     @State private var selectedMon: OnboardingMon?
-    var userModel: User = User(eatingStyle: .selfCare)
+    var userModel: User = User(eatingStyle: .selfCare, monName: "Yorox")
     @Query var users: [User]
     
     let mons = [
@@ -61,7 +61,7 @@ struct OnboardingView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.newRed)
+                            .background(Color.newOrange)
                             .cornerRadius(10)
                             
                     }
@@ -100,11 +100,16 @@ struct OnboardingView: View {
                 Button(action: {
                     selectedMon = mon
                     userModel.eatingStyle = selectedMon?.eatingStyle ?? EatingStyle.selfCare
+                    userModel.monName = selectedMon?.name ?? "Yorox"
+                    print("Selected mon: \(mon.name) with eating style: \(mon.eatingStyle.rawValue)")
+                    print("User model eating style: \(userModel.eatingStyle.rawValue)")
                     currentPage += 1
                     
                     if let existingUser = users.first {
+                        print("Deleting existing user with eating style: \(existingUser.eatingStyle.rawValue)")
                         context.delete(existingUser)
                     }
+                    print("Inserting new user with eating style: \(userModel.eatingStyle.rawValue)")
                     context.insert(userModel)
                 }) {
                     VStack(spacing: 8) {

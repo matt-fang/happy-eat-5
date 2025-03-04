@@ -2,12 +2,14 @@ import SwiftUI
 import SwiftData
 
 struct TrainView: View {
+    @Environment(\.modelContext) private var context
     @Binding var path: [NavScreen]
     let strategy: Strategy
+    let selectedOption: String
     @Query var users: [User]
     
-    // Grid layout for grass tiles - adjusted for larger sprites
-    let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 8)
+    // Grid layout for grass tiles - using square grid
+    let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 12)
     
     // Random grass types
     let grassTypes = ["ground/grass 1", "ground/grass 2", "ground/grass 3"]
@@ -23,49 +25,52 @@ struct TrainView: View {
         ("props/mushroom", 2)
     ]
     
+    // Calculate safe area for props
+    private var safeArea: (minX: CGFloat, maxX: CGFloat, minY: CGFloat, maxY: CGFloat) {
+        let padding: CGFloat = 80 // Safe area from edges
+        return (
+            minX: padding,
+            maxX: UIScreen.main.bounds.width - padding,
+            minY: padding + 120, // Account for header
+            maxY: UIScreen.main.bounds.height - padding - 100 // Account for buttons
+        )
+    }
+    
+    // Generate random positions within safe area
+    private var propPositions: [(CGFloat, CGFloat)] {
+        (0..<15).map { _ in
+            (CGFloat.random(in: safeArea.minX...safeArea.maxX),
+             CGFloat.random(in: safeArea.minY...safeArea.maxY))
+        }
+    }
+    
     var body: some View {
         ZStack {
             Color.cream.ignoresSafeArea()
             
-            // Landscape
-            ScrollView {
+            // Full-screen landscape
+            ZStack {
+                // Fixed grass grid
                 LazyVGrid(columns: columns, spacing: 0) {
-                    ForEach(0..<300, id: \.self) { index in
+                    ForEach(0..<144, id: \.self) { index in
                         Image(grassTypes.randomElement() ?? "ground/grass 1")
                             .resizable()
                             .interpolation(.none)
                             .scaledToFit()
-                            .frame(width: UIScreen.main.bounds.width / 8, height: UIScreen.main.bounds.width / 8)
                     }
                 }
-                .overlay {
-                    // Random props
-                    ForEach(0..<30) { _ in
-                        let prop = weightedRandomProp()
-                        Image(prop.name)
-                            .resizable()
-                            .interpolation(.none)
-                            .scaledToFit()
-                            .frame(width: 64, height: 64)
-                            .position(
-                                x: CGFloat.random(in: 0...UIScreen.main.bounds.width),
-                                y: CGFloat.random(in: 0...UIScreen.main.bounds.height * 2)
-                            )
-                    }
-                }
-            }
-            .ignoresSafeArea()
-            
-            // Overlay content
-            VStack {
-                // Strategy name at top
-                Text(strategy.name?.sentenceCased() ?? "Strategy")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding(.top, 8)
+                .ignoresSafeArea()
                 
-                Spacer()
+                // Random props with fixed positions
+//                ForEach(Array(zip(propPositions, (0..<15))), id: \.1) { position, index in
+//                    let prop = weightedRandomProp()
+//                    Image(prop.name)
+//                        .resizable()
+//                        .interpolation(.none)
+//                        .scaledToFit()
+//                        .frame(width: 40, height: 40)
+//                        .position(x: position.0, y: position.1)
+//                }
                 
                 // Mon character
                 if let user = users.first {
@@ -73,31 +78,66 @@ struct TrainView: View {
                         .resizable()
                         .interpolation(.none)
                         .scaledToFit()
-                        .frame(width: 96, height: 96)
+                        .frame(width: 40, height: 40)
                         .position(
-                            x: UIScreen.main.bounds.width * 0.5,
-                            y: UIScreen.main.bounds.height * 0.3
+                            x: UIScreen.main.bounds.width/2,
+                            y: UIScreen.main.bounds.height/2
                         )
                 }
+            }
+            .zIndex(0)
+            
+            // Main content container
+            VStack(spacing: 24) {
+                // Header text
+                Text("Let's train \(users.first?.monName ?? "Mon")!")
+                    .font(.system(size: 32, weight: .bold))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                    .padding(.top, 32)
+                
+                // Strategy text
+                Text("\(selectedOption)")
+                    .font(.title3)
+                    .fontWeight(.medium)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
                 
                 Spacer()
                 
-                // Done button at bottom
-                Button {
-                    path.append(.reflect(strategy, ""))
-                } label: {
-                    Text("Done")
-                        .font(.headline)
-                        .foregroundColor(.black)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
-                        .background(Color.white)
-                        .cornerRadius(8)
+                // Action buttons
+                HStack(spacing: 16) {
+                    Button {
+                        path.append(.reflect(strategy))
+                    } label: {
+                        Text("Not today")
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 20)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(20)
+                    }
+                    
+                    Button {
+                        path.append(.reflect(strategy))
+                    } label: {
+                        Text("I did it!")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 20)
+                            .background(Color.newOrange)
+                            .cornerRadius(20)
+                    }
                 }
-                .padding(.bottom, 8)
+                .padding(.horizontal)
+                .padding(.bottom, 32)
             }
+            .zIndex(1)
         }
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(true)
         .toolbar(.hidden, for: .tabBar)
     }
     

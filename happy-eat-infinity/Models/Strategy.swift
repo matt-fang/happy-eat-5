@@ -12,21 +12,19 @@ import SwiftData
 @Model
 class Strategy: DeckItem, Hashable {
     static let schemaVersion = Schema.Version(1, 0, 2)
-    @Attribute(.unique) var name: String?
+    var name: String?
     var instructions: String?
     
-    var content: String?
-    var contentType: ContentType?
+    var content: [String]?
     var eatingStyles: [EatingStyle] = [EatingStyle.selfCare]
     var xpReward: Int = 100
     
     var id: UUID = UUID()
     
-    init(name: String, instructions: String, content: String? = nil, contentType: ContentType, eatingStyles: [EatingStyle], xpReward: Int = 100) {
+    init(name: String, instructions: String, content: [String]? = nil, eatingStyles: [EatingStyle], xpReward: Int = 100) {
         self.name = name
         self.instructions = instructions
         self.content = content
-        self.contentType = contentType
         self.eatingStyles = eatingStyles
         self.xpReward = xpReward
     }

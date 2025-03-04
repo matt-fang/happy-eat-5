@@ -15,11 +15,11 @@ struct StreakBadgeView: View {
                 if isYellow {
                     Image(systemName: "flame.fill")
                         .font(.system(size: 14))
-                        .foregroundColor(.newRed)
+                        .foregroundColor(.newOrange)
                 }
                 Text("\(streak) completed")
                     .font(.system(.body, design: .rounded).bold())
-                    .foregroundStyle(isYellow ? Color.newRed : .black)
+                    .foregroundStyle(isYellow ? Color.newOrange : .black)
                     .contentTransition(.numericText())
             }
             .padding()

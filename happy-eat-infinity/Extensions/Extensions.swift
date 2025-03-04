@@ -15,6 +15,7 @@ extension Color {
     static let lightGray = Color(red: 0.95, green: 0.92, blue: 0.86)
     static let newBlue = Color(red: 0.27, green: 0.74, blue: 0.94)
     static let newGreen = Color(red: 0.14, green: 0.77, blue: 0.62)
+    static let newOrange = Color(red: 1, green: 0.49, blue: 0.08)
     
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)

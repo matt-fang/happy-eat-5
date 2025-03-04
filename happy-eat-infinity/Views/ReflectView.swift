@@ -41,6 +41,7 @@ struct ReflectView: View {
                 // Save button
                 Button {
                     if let userModel = users.first {
+                        userModel.addXP(strategy.xpReward)
                         userModel.playStreakAnimation = true
                         saveReflection()
                     }
@@ -50,7 +51,7 @@ struct ReflectView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(selectedRating != nil ? Color.newRed : Color.gray)
+                        .background(selectedRating != nil ? Color.newOrange : Color.gray)
                         .cornerRadius(10)
                 }
                 .disabled(selectedRating == nil)
@@ -102,11 +103,6 @@ struct ReflectView: View {
         )
         
         context.insert(reflection)
-        
-        if let userModel = users.first {
-            userModel.showXPAnimation = true
-            userModel.addXP(strategy.xpReward)
-        }
         
         // Go back to root
         path.removeAll()
