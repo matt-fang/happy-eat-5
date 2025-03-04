@@ -25,7 +25,7 @@ struct OnboardingView: View {
                     Text("Welcome to Happy Eat!")
                         .font(.title)
                         .fontWeight(.bold)
-                    Text("Tell us about your eating habits so we can tailor advice just for you.")
+                    Text("Choose your starter mon on the next screen.")
                         .font(.title3)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
@@ -33,20 +33,29 @@ struct OnboardingView: View {
                 .tag(0)
                 
                 // Style Selection
+                
                 ScrollView {
-                    strategies
+                    VStack {
+                        Spacer()
+                        Text("Which mon do you relate to the most?")
+                            .font(.title3)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                        strategies
+                        Spacer()
+                    }
                 }
                 .tag(1)
                 
                 // Strategy Info
                 VStack(spacing: 32) {
                     VStack(spacing: 16) {
-                        Text("Perfect! We've got some strategies ready for you.")
+                        Text("Perfect! Your mission is to train your mon to be a happier, healthier eater.")
                             .font(.title2)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
                         
-                        Text("Swipe through the cards on the next screen and select the ones that feel most helpful!")
+                        Text("Swipe through the cards on the next screen, and train them with the strategies that seem the most helpful!")
                             .font(.body)
                             .multilineTextAlignment(.center)
                     }
@@ -79,12 +88,12 @@ struct OnboardingView: View {
                 Image(systemName: "chevron.left")
                     .padding()
                     .bold()
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(Color.newOrange)
                 Spacer()
                 Image(systemName: "chevron.right")
                     .padding()
                     .bold()
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(Color.newOrange)
                 Spacer()
             }
             .padding(.horizontal, 40)
@@ -93,8 +102,8 @@ struct OnboardingView: View {
     
     var strategies: some View {
         LazyVGrid(columns: [
-            GridItem(.flexible()),
-            GridItem(.flexible())
+            GridItem(.flexible(), spacing: 16),
+            GridItem(.flexible(), spacing: 16)
         ], spacing: 16) {
             ForEach(mons, id: \.id) { mon in
                 Button(action: {
@@ -103,7 +112,6 @@ struct OnboardingView: View {
                     userModel.monName = selectedMon?.name ?? "Yorox"
                     print("Selected mon: \(mon.name) with eating style: \(mon.eatingStyle.rawValue)")
                     print("User model eating style: \(userModel.eatingStyle.rawValue)")
-                    currentPage += 1
                     
                     if let existingUser = users.first {
                         print("Deleting existing user with eating style: \(existingUser.eatingStyle.rawValue)")
@@ -112,25 +120,28 @@ struct OnboardingView: View {
                     print("Inserting new user with eating style: \(userModel.eatingStyle.rawValue)")
                     context.insert(userModel)
                 }) {
-                    VStack(spacing: 8) {
+                    VStack(spacing: 12) {
                         Image(mon.image)
-                            .interpolation(.none)
                             .resizable()
+                            .interpolation(.none)
                             .scaledToFit()
-                        
+                            .frame(width: 100, height: 100) // Ensures a uniform size for all images
+                            .padding(.bottom, 4)
+
                         Text(mon.name)
                             .font(.headline)
-                        
+
                         Text(mon.description)
                             .font(.caption)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.gray)
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(height: 200) // Ensures a uniform card size
                     .padding()
                     .background(selectedMon?.id == mon.id ? Color.white : Color.gray.opacity(0.1))
                     .foregroundColor(.black)
                     .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2) // Adds subtle depth
                 }
             }
         }

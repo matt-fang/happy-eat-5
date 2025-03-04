@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A51A47372D76C2FF00B0C6F2 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51A47362D76C2FF00B0C6F2 /* WidgetKit.framework */; };
-		A51A47392D76C2FF00B0C6F2 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51A47382D76C2FF00B0C6F2 /* SwiftUI.framework */; };
-		A51A47482D76C30000B0C6F2 /* TrainingWidgetExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A51A47342D76C2FF00B0C6F2 /* TrainingWidgetExtensionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A53E59DC2D6BF6AF004D43DE /* DeckKit in Frameworks */ = {isa = PBXBuildFile; productRef = A53E59DB2D6BF6AF004D43DE /* DeckKit */; };
 /* End PBXBuildFile section */
 
@@ -28,13 +25,6 @@
 			remoteGlobalIDString = A50A01A02D6BEA5C0011EF6F;
 			remoteInfo = "happy-eat-infinity";
 		};
-		A51A47462D76C30000B0C6F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A50A01992D6BEA5C0011EF6F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A51A47332D76C2FF00B0C6F2;
-			remoteInfo = TrainingWidgetExtensionExtension;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,7 +34,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A51A47482D76C30000B0C6F2 /* TrainingWidgetExtensionExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,21 +44,10 @@
 		A50A01A12D6BEA5C0011EF6F /* happy-eat-5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "happy-eat-5.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A50A01B12D6BEA5D0011EF6F /* happy-eat-5Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "happy-eat-5Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A50A01BB2D6BEA5D0011EF6F /* happy-eat-5UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "happy-eat-5UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A51A47342D76C2FF00B0C6F2 /* TrainingWidgetExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TrainingWidgetExtensionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A51A47362D76C2FF00B0C6F2 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		A51A47382D76C2FF00B0C6F2 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		A51BCAD42D6FC2F0000557A4 /* happy-eat-5-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "happy-eat-5-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		A51A47492D76C30000B0C6F2 /* Exceptions for "TrainingWidgetExtension" folder in "TrainingWidgetExtensionExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = A51A47332D76C2FF00B0C6F2 /* TrainingWidgetExtensionExtension */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A50A01A32D6BEA5C0011EF6F /* happy-eat-infinity */ = {
@@ -90,14 +68,6 @@
 		A50A01DD2D6BEC8F0011EF6F /* Resources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		A51A473A2D76C2FF00B0C6F2 /* TrainingWidgetExtension */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				A51A47492D76C30000B0C6F2 /* Exceptions for "TrainingWidgetExtension" folder in "TrainingWidgetExtensionExtension" target */,
-			);
-			path = TrainingWidgetExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -125,15 +95,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A51A47312D76C2FF00B0C6F2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A51A47392D76C2FF00B0C6F2 /* SwiftUI.framework in Frameworks */,
-				A51A47372D76C2FF00B0C6F2 /* WidgetKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -145,7 +106,6 @@
 				A50A01A32D6BEA5C0011EF6F /* happy-eat-infinity */,
 				A50A01B42D6BEA5D0011EF6F /* happy-eat-infinityTests */,
 				A50A01BE2D6BEA5D0011EF6F /* happy-eat-infinityUITests */,
-				A51A473A2D76C2FF00B0C6F2 /* TrainingWidgetExtension */,
 				A51A47352D76C2FF00B0C6F2 /* Frameworks */,
 				A50A01A22D6BEA5C0011EF6F /* Products */,
 			);
@@ -157,7 +117,6 @@
 				A50A01A12D6BEA5C0011EF6F /* happy-eat-5.app */,
 				A50A01B12D6BEA5D0011EF6F /* happy-eat-5Tests.xctest */,
 				A50A01BB2D6BEA5D0011EF6F /* happy-eat-5UITests.xctest */,
-				A51A47342D76C2FF00B0C6F2 /* TrainingWidgetExtensionExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -186,7 +145,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				A51A47472D76C30000B0C6F2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				A50A01A32D6BEA5C0011EF6F /* happy-eat-infinity */,
@@ -246,28 +204,6 @@
 			productReference = A50A01BB2D6BEA5D0011EF6F /* happy-eat-5UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		A51A47332D76C2FF00B0C6F2 /* TrainingWidgetExtensionExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A51A474A2D76C30000B0C6F2 /* Build configuration list for PBXNativeTarget "TrainingWidgetExtensionExtension" */;
-			buildPhases = (
-				A51A47302D76C2FF00B0C6F2 /* Sources */,
-				A51A47312D76C2FF00B0C6F2 /* Frameworks */,
-				A51A47322D76C2FF00B0C6F2 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				A51A473A2D76C2FF00B0C6F2 /* TrainingWidgetExtension */,
-			);
-			name = TrainingWidgetExtensionExtension;
-			packageProductDependencies = (
-			);
-			productName = TrainingWidgetExtensionExtension;
-			productReference = A51A47342D76C2FF00B0C6F2 /* TrainingWidgetExtensionExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -288,9 +224,6 @@
 					A50A01BA2D6BEA5D0011EF6F = {
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = A50A01A02D6BEA5C0011EF6F;
-					};
-					A51A47332D76C2FF00B0C6F2 = {
-						CreatedOnToolsVersion = 16.1;
 					};
 				};
 			};
@@ -314,7 +247,6 @@
 				A50A01A02D6BEA5C0011EF6F /* happy-eat-5 */,
 				A50A01B02D6BEA5D0011EF6F /* happy-eat-5Tests */,
 				A50A01BA2D6BEA5D0011EF6F /* happy-eat-5UITests */,
-				A51A47332D76C2FF00B0C6F2 /* TrainingWidgetExtensionExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -335,13 +267,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A50A01B92D6BEA5D0011EF6F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A51A47322D76C2FF00B0C6F2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -372,13 +297,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A51A47302D76C2FF00B0C6F2 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -391,11 +309,6 @@
 			isa = PBXTargetDependency;
 			target = A50A01A02D6BEA5C0011EF6F /* happy-eat-5 */;
 			targetProxy = A50A01BC2D6BEA5D0011EF6F /* PBXContainerItemProxy */;
-		};
-		A51A47472D76C30000B0C6F2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A51A47332D76C2FF00B0C6F2 /* TrainingWidgetExtensionExtension */;
-			targetProxy = A51A47462D76C30000B0C6F2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -665,62 +578,6 @@
 			};
 			name = Release;
 		};
-		A51A474B2D76C30000B0C6F2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G2CVP4KJ2Q;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TrainingWidgetExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = TrainingWidgetExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = co.monkeyapps.happyeat.TrainingWidgetExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		A51A474C2D76C30000B0C6F2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G2CVP4KJ2Q;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TrainingWidgetExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = TrainingWidgetExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = co.monkeyapps.happyeat.TrainingWidgetExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -756,15 +613,6 @@
 			buildConfigurations = (
 				A50A01CC2D6BEA5D0011EF6F /* Debug */,
 				A50A01CD2D6BEA5D0011EF6F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A51A474A2D76C30000B0C6F2 /* Build configuration list for PBXNativeTarget "TrainingWidgetExtensionExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A51A474B2D76C30000B0C6F2 /* Debug */,
-				A51A474C2D76C30000B0C6F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -34,9 +34,6 @@ struct CardsView: View {
                     .padding(16)
             }
             
-            if showLevelUpOverlay {
-                LevelUpOverlay(userModel: userModel)
-            }
         }
         .navigationTitle("Train \(userModel.monName)!")
         .navigationBarTitleDisplayMode(.large)
