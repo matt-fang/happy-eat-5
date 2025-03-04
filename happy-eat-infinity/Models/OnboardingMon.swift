@@ -6,10 +6,13 @@
 //
 
 import Foundation
+import SwiftUI
 
-struct OnboardingEatingStyle: Identifiable, Codable, Equatable {
+struct OnboardingMon: Identifiable, Codable, Equatable {
     let id = UUID()
-    let title: String
+    
+    let monImage: String
+    let monName: String
     let description: String
     let eatingStyle: EatingStyle
 }
