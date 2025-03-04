@@ -19,6 +19,11 @@ struct CardsView: View {
                 MonStatusView(userModel: userModel, xpProgress: xpProgress)
                     .padding()
                 
+                Text("Swipe through these strategies!")
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.gray)
+                    .offset(y:10)
+                
                 if filteredStrategies.isEmpty {
                     Text("No strategies available")
                         .foregroundStyle(.secondary)
@@ -80,11 +85,11 @@ struct CardsView: View {
             // Show level up animation if needed
             if userModel.showLevelUpAnimation {
                 withAnimation(.easeInOut(duration: 1.0)) {
-                    xpProgress = 0 // Reset progress bar to 0 for new level
+                    xpProgress = userModel.getXPProgress()
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     withAnimation(.easeInOut(duration: 1.5)) {
-                        xpProgress = userModel.getXPProgress() // Animate to new progress
+                        xpProgress = 0 // Animate to new progress
                     }
                 }
                 userModel.showLevelUpAnimation = false

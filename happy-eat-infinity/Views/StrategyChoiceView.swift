@@ -40,7 +40,7 @@ struct StrategyChoiceView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
-                    .padding(.top, 32)
+                    .padding(.top, 20)
                 
                 // Instructions
                 Text(strategy.instructions ?? "")

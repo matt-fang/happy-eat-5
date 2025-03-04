@@ -48,7 +48,7 @@ struct MonStatusView: View {
         .padding()
         .background(Color.white)
         .cornerRadius(12)
-        .shadow(radius: 2)
+        .shadow(color: Color.black.opacity(0.15), radius: 1)
         .padding(.horizontal)
     }
     

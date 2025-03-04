@@ -49,7 +49,7 @@ struct TrainView: View {
             Color.cream.ignoresSafeArea()
             
             // Full-screen landscape
-            ZStack {
+            ZStack(alignment: .center) {
                 // Fixed grass grid
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(0..<144, id: \.self) { index in
@@ -59,6 +59,7 @@ struct TrainView: View {
                             .scaledToFit()
                     }
                 }
+                .frame(maxHeight: .infinity, alignment: .center) // Ensures centering
                 .ignoresSafeArea()
                 
                 // Random props with fixed positions
@@ -94,7 +95,7 @@ struct TrainView: View {
                     .font(.system(size: 32, weight: .bold))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
-                    .padding(.top, 32)
+                    .padding(.top)
                 
                 // Strategy text
                 Text("\(selectedOption)")
@@ -105,20 +106,12 @@ struct TrainView: View {
                 
                 Spacer()
                 
+                Text("Come back and make a selection once you've tried the strategy in real life!")
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.gray)
+                    .padding()
                 // Action buttons
                 HStack(spacing: 16) {
-                    Button {
-                        path.append(.reflect(strategy))
-                    } label: {
-                        Text("Not today")
-                            .font(.title3)
-                            .fontWeight(.medium)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 20)
-                            .background(Color.gray.opacity(0.2))
-                            .cornerRadius(20)
-                    }
-                    
                     Button {
                         path.append(.reflect(strategy))
                     } label: {
@@ -131,14 +124,25 @@ struct TrainView: View {
                             .background(Color.newOrange)
                             .cornerRadius(20)
                     }
+                    
+                    Button {
+                        path.append(.reflect(strategy))
+                    } label: {
+                        Text("Not today")
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 20)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(20)
+                    }
+                    
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 32)
             }
             .zIndex(1)
         }
-        .navigationBarHidden(true)
-        .toolbar(.hidden, for: .tabBar)
     }
     
     private func weightedRandomProp() -> (name: String, weight: Int) {
